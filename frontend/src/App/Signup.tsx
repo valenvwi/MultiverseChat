@@ -25,20 +25,20 @@ const Register = () => {
     },
     validate: (values) => {
       const errors: Partial<typeof values> = {};
-      if (!values.username) {
-        errors.username = "Required";
+      if (values.username.length < 4 || values.username.length > 15) {
+        errors.username = "Username must be 4-15 characters long";
       }
       if (!values.email) {
         errors.email = "Required";
       }
-      if (!values.password) {
-        errors.password = "Required";
+      if (values.password.length < 6 || values.password.length > 20) {
+        errors.password = "Password must be 6-20 characters long";
       }
       if (!values.confirmPassword) {
         errors.confirmPassword = "Required";
       }
       if (values.password !== values.confirmPassword) {
-        errors.password = "Passwords do not match";
+        errors.confirmPassword = "Passwords do not match";
       }
       return errors;
     },
@@ -48,13 +48,12 @@ const Register = () => {
       const status = await signup(username, email, password);
       if (status === 409) {
         formik.setErrors({
-          username: "Invalid username",
+          username: "Username already existed",
         });
-      } else if (status === 401) {
+      } else if (status === 400) {
         console.log("Unauthorized");
         formik.setErrors({
-          username: "Username already existed",
-          password: "Invalid username or password",
+          email: "Email already existed",
         });
       } else {
         const loginstatus = await login(username, password);
@@ -142,8 +141,8 @@ const Register = () => {
                   id="confirmPassword"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
-                  // error={!!formik.touched.confirmPassword && !!formik.errors.confirmPassword}
-                  // helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                  error={!!formik.touched.confirmPassword && !!formik.errors.confirmPassword}
+                  helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
                 />
               </Grid>
             </Grid>

@@ -36,7 +36,7 @@ const Login = () => {
       const { username, password } = values;
       const status = await login(username, password);
       if (status === 401) {
-        console.log("Unauthorised");
+        console.log("Unauthorized");
         formik.setErrors({
           username: "Invalid username or password",
           password: "Invalid username or password",

@@ -33,10 +33,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             username = self.validated_data["username"]
             email = self.validated_data["email"]
             if User.objects.filter(username=username).exists():
-                self._errors["username"] = ["username already exists"]
+                self._errors["username"] = ["Username already exists"]
                 valid = False
             if User.objects.filter(email=email).exists():
-                self._errors["email"] = ["username already exists"]
+                self._errors["email"] = ["Email already exists"]
                 valid = False
 
         return valid

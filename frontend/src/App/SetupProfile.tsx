@@ -14,13 +14,14 @@ import Avatar from "@mui/material/Avatar";
 import defaultAvatar from "./assets/default.png";
 import UserProfileProps from "../types/userProfile";
 import { BASEURL } from "../config";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import languageOptions from "../constants";
 
 const defaultTheme = createTheme();
 
 axios.defaults.withCredentials = true;
 
 const SetupProfile = () => {
-  // const userId = localStorage.getItem("user_id");
   const [avatarPreview, setAvatarPreview] = useState(defaultAvatar);
 
   const navigate = useNavigate();
@@ -81,13 +82,13 @@ const SetupProfile = () => {
       // if (!values.avatar.name) {
       //   errors.avatar = 'Please upload an avatar.';
       // }
-      if (!values.firstName) {
+      if (values.firstName.trim() === "") {
         errors.firstName = "Required";
       }
-      if (!values.lastName) {
+      if (values.lastName.trim() === "") {
         errors.lastName = "Required";
       }
-      if (!values.location) {
+      if (values.location.trim() === "") {
         errors.location = "Required";
       }
       if (!values.nativeLanguage) {
@@ -96,8 +97,8 @@ const SetupProfile = () => {
       if (!values.targetLanguage) {
         errors.targetLanguage = "Required";
       }
-      if (!values.bio) {
-        errors.bio = "Required";
+      if (values.bio.length < 10 || values.bio.length > 200) {
+        errors.bio = "Minimum 10 Characters & maximum 200 characters";
       }
       return errors;
     },
@@ -232,49 +233,64 @@ const SetupProfile = () => {
               </Grid>
 
               <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  value={formik.values.nativeLanguage}
-                  id="nativeLanguage"
-                  label="Native Language"
-                  onChange={formik.handleChange}
-                  error={
-                    !!formik.touched.nativeLanguage &&
-                    !!formik.errors.nativeLanguage
-                  }
-                  helperText={
-                    formik.touched.nativeLanguage && formik.errors.nativeLanguage
-                  }
-                  autoComplete="native-language"
-                />
+                <FormControl sx={{ width: "100%" }}>
+                  <InputLabel id="demo-simple-select-helper-label">
+                    Native Language
+                  </InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    id="nativeLanguage"
+                    name="nativeLanguage"
+                    label="Native Language"
+                    value={formik.values.nativeLanguage}
+                    onChange={formik.handleChange}
+                    error={
+                      !!formik.touched.nativeLanguage &&
+                      !!formik.errors.nativeLanguage
+                    }
+                  >
+                    {languageOptions.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+
+              <Grid item xs={12}>
+                <FormControl sx={{ width: "100%" }}>
+                  <InputLabel id="demo-simple-select-helper-label">
+                    Target Language
+                  </InputLabel>
+                  <Select
+                    required
+                    fullWidth
+                    id="targetLanguage"
+                    name="targetLanguage"
+                    label="Target Language"
+                    value={formik.values.targetLanguage}
+                    onChange={formik.handleChange}
+                    error={
+                      !!formik.touched.targetLanguage &&
+                      !!formik.errors.targetLanguage
+                    }
+                  >
+                    {languageOptions.map((option) => (
+                      <MenuItem key={option} value={option}>
+                        {option}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
               </Grid>
 
               <Grid item xs={12}>
                 <TextField
                   required
                   fullWidth
-                  type="targetLanguage"
-                  id="targetLanguage"
-                  label="Target Language"
-                  value={formik.values.targetLanguage}
-                  onChange={formik.handleChange}
-                  error={
-                    !!formik.touched.targetLanguage &&
-                    !!formik.errors.targetLanguage
-                  }
-                  helperText={
-                    formik.touched.targetLanguage &&
-                    formik.errors.targetLanguage
-                  }
-                  autoComplete="targetLanguage"
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
+                  multiline
                   id="bio"
                   label="Bio"
                   value={formik.values.bio}
