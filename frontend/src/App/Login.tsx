@@ -9,12 +9,13 @@ import {
   Grid,
   Link,
   TextField,
-  ThemeProvider,
   Typography,
-  createTheme,
 } from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+
 const Login = () => {
   const defaultTheme = createTheme();
+
   const { login } = useAuth();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -49,7 +50,7 @@ const Login = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
+        {/* <CssBaseline /> */}
         <Box
           sx={{
             marginTop: 8,

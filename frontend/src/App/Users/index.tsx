@@ -2,9 +2,19 @@ import { useEffect, useState } from "react";
 // import Axios from "axios";
 import UserProfile from "./UserProfile";
 import { useAuth } from "../../services/AuthServices";
-import { Button, Container, Grid } from "@mui/material";
+import {
+  BottomNavigation,
+  BottomNavigationAction,
+  Button,
+  Container,
+  Grid,
+  Paper,
+} from "@mui/material";
 import UserProfileProps from "../../types/userProfile";
 import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
+import ChatIcon from "@mui/icons-material/Chat";
+import HomeIcon from "@mui/icons-material/Home";
+import PersonIcon from "@mui/icons-material/Person";
 
 const Users = () => {
   const { logout } = useAuth();
@@ -21,7 +31,7 @@ const Users = () => {
       const data = response.data;
       console.log(data);
 
-      const userProfiles = data.map((user) => ({
+      const userProfiles = data.map((user: any) => ({
         firstName: user.first_name,
         lastName: user.last_name,
         avatar: user.avatar,
@@ -62,6 +72,16 @@ const Users = () => {
           </Grid>
         ))}
       </Grid>
+      <Paper
+        sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+        elevation={3}
+      >
+        <BottomNavigation showLabels>
+          <BottomNavigationAction label="Messages" icon={<ChatIcon />} />
+          <BottomNavigationAction label="Home" icon={<HomeIcon />} />
+          <BottomNavigationAction label="Profile" icon={<PersonIcon />} />
+        </BottomNavigation>
+      </Paper>
     </Container>
   );
 };
