@@ -1,4 +1,12 @@
-import { Box, List, ListItem, ListItemText } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardMedia,
+  Grid,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import UserProfileProps from "../../types/userProfile";
 
@@ -9,36 +17,94 @@ type Props = {
 const UserProfile: React.FC<Props> = ({ user }) => {
   return (
     <>
-      <Box
+      <Card
         sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
+          mt: 4,
+          pl: 3,
+          margin: "0 auto",
         }}
       >
-        <List>
-          <ListItem>
-            <img
+        <Grid container spacing={2}>
+          <Grid
+            xs={12}
+            md={4}
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <CardMedia
+              component="img"
               src={`http://127.0.0.1:8000/${user.avatar}`}
-              height="400"
-              width="400"
-              style={{ objectFit: "cover", borderRadius: "95%" }}
-            ></img>
-          </ListItem>
+              sx={{ width: "95%", mt: { xs: 4 } }}
+              style={{
+                objectFit: "cover",
+                borderRadius: "10px",
+                aspectRatio: "1",
+              }}
+            ></CardMedia>
+          </Grid>
+          <Grid xs={12} md={8}>
+            <Box
+              sx={{
+                mx: 4,
+                mt: 4,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: { xs: "center", md: "flex-start" },
+              }}
+            >
+              <Typography variant="h5">{user.firstName}</Typography>
+              <Typography variant="subtitle2" sx={{ ml: 2 }}>
+                {user.location}
+              </Typography>
+            </Box>
+            <Box
+              sx={{
+                mx: 4,
+                textAlign: { xs: "center", md: "left" },
+                "& > p": {
+                  overflow: "hidden",
+                  display: "-webkit-box",
+                  WebkitBoxOrient: "vertical",
+                  WebkitLineClamp: 3,
+                  minHeight: "3em",
+                },
+              }}
+            >
+              <Typography variant="body2">{user.bio}</Typography>
+            </Box>
+            <Box
+              sx={{
+                mx: 4,
+                mt: 2,
+                textAlign: "center",
+                display: { xs: "block", md: "flex" },
+                justifyContent: { md: "space-between" },
+              }}
+            >
+              <Typography variant="body1">
+                Native: {user.nativeLanguage}
+              </Typography>
 
-          <ListItem>
-            <ListItemText primary={user.firstName} />
-            <ListItemText secondary={user.location} />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary={`Native language: ${user.nativeLanguage}`} />
-          </ListItem>
-          <ListItem>
-            <ListItemText primary={`Target language: ${user.targetLanguage}`} />
-          </ListItem>
-        </List>
-      </Box>
+              <Typography variant="body1">
+                Learn: {user.targetLanguage}
+              </Typography>
+            </Box>
+            <CardActions>
+              <Button
+                size="small"
+                sx={{
+                  margin: "0 auto",
+                }}
+              >
+                Send a message
+              </Button>
+            </CardActions>
+          </Grid>
+        </Grid>
+      </Card>
     </>
   );
 };
