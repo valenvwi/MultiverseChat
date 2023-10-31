@@ -20,12 +20,12 @@ const UserProfile: React.FC<Props> = ({ user }) => {
       <Card
         sx={{
           mt: 4,
-          pl: 3,
           margin: "0 auto",
         }}
       >
-        <Grid container spacing={2}>
+        <Grid container sx={{ spacing: { xs: 0, md: 1 } }}>
           <Grid
+            item
             xs={12}
             md={4}
             sx={{
@@ -37,7 +37,10 @@ const UserProfile: React.FC<Props> = ({ user }) => {
             <CardMedia
               component="img"
               src={`http://127.0.0.1:8000/${user.avatar}`}
-              sx={{ width: "95%", mt: { xs: 4 } }}
+              sx={{
+                width: "95%",
+                margin: { xs: "10px auto", md: "0px 0px 0px 24px" },
+              }}
               style={{
                 objectFit: "cover",
                 borderRadius: "10px",
@@ -45,7 +48,7 @@ const UserProfile: React.FC<Props> = ({ user }) => {
               }}
             ></CardMedia>
           </Grid>
-          <Grid xs={12} md={8}>
+          <Grid xs={12} md={8} item>
             <Box
               sx={{
                 mx: 4,
