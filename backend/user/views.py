@@ -29,7 +29,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
         if nativeLanguage:
             try:
-                self.queryset = self.queryset.filter(native_language=nativeLanguage.capitalize())
+                self.queryset = self.queryset.filter(native_language=nativeLanguage.capitalize(), active=True)
                 if not self.queryset.exists():
                     raise ValidationError(detail=f"Users with nativeLanguage {nativeLanguage} not found")
             except ValueError:
