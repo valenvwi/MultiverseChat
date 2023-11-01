@@ -8,8 +8,6 @@ import {
 } from "@mui/material";
 
 const FinishProfileSetup = () => {
-
-  const firstName = localStorage.getItem("first_name");
   return (
     <Container component="main" maxWidth="xs">
       <CssBaseline />
@@ -24,7 +22,7 @@ const FinishProfileSetup = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Great {firstName}! You have finished setting up your profile!
+          Great! You have finished setting up your profile!
         </Typography>
 
         <Button type="submit" variant="contained" sx={{ mt: 4, mb: 3 }}>

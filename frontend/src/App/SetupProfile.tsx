@@ -1,13 +1,24 @@
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Typography, Container, Button, TextField, Grid, FormControl, InputLabel, MenuItem, Select } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Container,
+  Button,
+  TextField,
+  Grid,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
 import defaultAvatar from "./assets/default.png";
-import UserProfileProps from "../types/userProfile";
+import { UserProfileProps } from "../types/userProfile";
 import { BASEURL } from "../config";
 import languageOptions from "../constants";
 

@@ -10,12 +10,9 @@ export function useFetchCurrentUser(): UserProfileProps | null {
     const fetchCurrentUser = async () => {
       try {
         const userId = localStorage.getItem("user_id");
-        const response = await axios.get(
-          `${BASEURL}/users/${userId}`,
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${BASEURL}/users/${userId}`, {
+          withCredentials: true,
+        });
         const userDetails = response.data;
         const userProfile: UserProfileProps = {
           firstName: userDetails.first_name,

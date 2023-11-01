@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
-import UserProfileProps from "../../types/userProfile";
+import { UserProfileProps } from "../../types/userProfile";
 
 type Props = {
   user: UserProfileProps;
