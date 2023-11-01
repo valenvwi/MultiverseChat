@@ -7,7 +7,9 @@ import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import Navtab from "./Navtab";
 import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
 import { BASEURL } from "../../config";
-import AppBottomNavigation from "../UI/AppBottomNavigation";
+import AppBottomNavBar from "../UI/AppBottomNavBar";
+import { useTheme } from "@mui/material/styles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Users = () => {
   const { logout } = useAuth();
@@ -18,6 +20,8 @@ const Users = () => {
   const currentUser = useFetchCurrentUser();
   console.log(currentUser?.targetLanguage);
   const [currentTab, setCurrentTab] = useState(0);
+  const theme = useTheme();
+  const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const fetchUsers = async () => {
     setIsLoading(true);
@@ -75,13 +79,15 @@ const Users = () => {
   }, []);
 
   return (
-    <Container maxWidth="lg">
-      <h1>All users</h1>
-      <Button onClick={logout}>Logout</Button>
+    <Container maxWidth="xl">
+      <br />
       <Navtab onChangeTab={handleTabChange} />
 
       {users.length === 0 && !isLoading && (
-        <Typography variant="h4" sx={{ margin: "0 auto" }}>
+        <Typography
+          variant="h4"
+          sx={{ margin: "0px auto", textAlign: "center" }}
+        >
           No users found
         </Typography>
       )}
@@ -93,7 +99,7 @@ const Users = () => {
           </Grid>
         ))}
       </Grid>
-      <AppBottomNavigation />
+      {!isBigScreen && <AppBottomNavBar />}
     </Container>
   );
 };

@@ -4,7 +4,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
 
-const AppBottomNavigation = () => {
+const AppBottomNavBar = () => {
   return (
     <Paper
       sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
@@ -29,4 +29,4 @@ const AppBottomNavigation = () => {
   );
 };
 
-export default AppBottomNavigation;
+export default AppBottomNavBar;

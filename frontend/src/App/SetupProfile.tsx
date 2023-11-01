@@ -145,7 +145,7 @@ const SetupProfile = () => {
   });
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="xs">
+      <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
           sx={{
@@ -293,6 +293,7 @@ const SetupProfile = () => {
 
               <Grid item xs={12}>
                 <TextField
+                  rows={6}
                   required
                   fullWidth
                   multiline

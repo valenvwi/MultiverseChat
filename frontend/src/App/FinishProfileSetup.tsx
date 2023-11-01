@@ -10,7 +10,7 @@ import {
 const FinishProfileSetup = () => {
   const firstName = localStorage.getItem("first_name");
   return (
-    <Container component="main" maxWidth="xs">
+    <Container>
       <CssBaseline />
       <Box
         sx={{
@@ -20,6 +20,7 @@ const FinishProfileSetup = () => {
           alignItems: "center",
           justifyContent: "center",
           height: "80vh",
+          textAlign: "center",
         }}
       >
         <Typography component="h1" variant="h5">

@@ -12,7 +12,11 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  FormGroup,
+  Switch,
+  FormControlLabel,
 } from "@mui/material";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useState } from "react";
@@ -22,7 +26,8 @@ import { UserProfileProps } from "../../types/userProfile";
 import { BASEURL } from "../../config";
 import languageOptions from "../../constants";
 import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
-import AppBottomNavigation from "../UI/AppBottomNavigation";
+import AppBottomNavBar from "../UI/AppBottomNavBar";
+import { useTheme } from "@mui/material/styles";
 
 const defaultTheme = createTheme();
 
@@ -33,6 +38,8 @@ const EditProfile = () => {
   const currentUser = useFetchCurrentUser();
   console.log(currentUser?.targetLanguage);
   console.log("userId: ", currentUser?.id);
+  const theme = useTheme();
+  const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const navigate = useNavigate();
 
@@ -60,6 +67,7 @@ const EditProfile = () => {
     formData.append("native_language", userProfile.nativeLanguage);
     formData.append("target_language", userProfile.targetLanguage);
     formData.append("bio", userProfile.bio);
+    formData.append("active", userProfile.active);
 
     console.log("FormData: ", formData);
 
@@ -86,6 +94,7 @@ const EditProfile = () => {
       nativeLanguage: currentUser?.nativeLanguage || "",
       targetLanguage: currentUser?.targetLanguage || "",
       bio: currentUser?.bio || "",
+      active: currentUser?.active || true,
     },
     validate: (values) => {
       const errors: Partial<typeof values> = {};
@@ -150,7 +159,7 @@ const EditProfile = () => {
   });
   return (
     <ThemeProvider theme={defaultTheme}>
-      <Container maxWidth="lg">
+      <Container component="main" maxWidth="md">
         <CssBaseline />
         <Box
           sx={{
@@ -298,6 +307,7 @@ const EditProfile = () => {
 
               <Grid item xs={12}>
                 <TextField
+                  rows={6}
                   required
                   fullWidth
                   multiline
@@ -310,6 +320,14 @@ const EditProfile = () => {
                   autoComplete="bio"
                 />
               </Grid>
+              <Grid item xs={12}>
+                <FormGroup>
+                  <FormControlLabel
+                    control={<Switch aria-label="login switch" />}
+                    label={currentUser?.active ? "Public" : "Private"}
+                  />
+                </FormGroup>
+              </Grid>
             </Grid>
             <Button
               type="submit"
@@ -321,7 +339,7 @@ const EditProfile = () => {
             </Button>
           </Box>
         </Box>
-        <AppBottomNavigation />
+        {!isBigScreen && <AppBottomNavBar />}
       </Container>
     </ThemeProvider>
   );
