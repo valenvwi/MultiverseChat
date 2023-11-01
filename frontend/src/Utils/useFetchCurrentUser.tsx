@@ -25,6 +25,7 @@ export function useFetchCurrentUser(): UserProfileProps | null {
           nativeLanguage: userDetails.native_language,
           targetLanguage: userDetails.target_language,
           bio: userDetails.bio,
+          id: userDetails.id,
         };
         setCurrentUser(userProfile);
       } catch (err) {

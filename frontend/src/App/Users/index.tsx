@@ -17,7 +17,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import Navtab from "./Navtab";
-import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser"
+import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
 import { BASEURL } from "../../config";
 
 const Users = () => {
@@ -35,29 +35,32 @@ const Users = () => {
     let apiEndpoint = `${BASEURL}/users/`;
 
     if (currentTab === 0) {
-      apiEndpoint += `?native_language=${currentUser?.targetLanguage}&target_language=${currentUser?.nativeLanguage}`;
-    } else {
       apiEndpoint += `?target_language=${currentUser?.targetLanguage}`;
+    } else {
+      apiEndpoint += `?native_language=${currentUser?.targetLanguage}&target_language=${currentUser?.nativeLanguage}`;
     }
 
     try {
-      // const response = await jwtAxios.get(`http://localhost:8000/api/users/?target_language=${currentUser?.targetLanguage}`);
       const response = await jwtAxios.get(apiEndpoint);
       const data = response.data;
       console.log(data);
 
-      const userProfiles: UserProfileProps[] = data.map((user: UserProfileData) => ({
-        firstName: user.first_name,
-        lastName: user.last_name,
-        avatar: user.avatar,
-        location: user.location,
-        nativeLanguage: user.native_language,
-        targetLanguage: user.target_language,
-        bio: user.bio,
-        id: user.id,
-      }));
+      const userProfiles: UserProfileProps[] = data.map(
+        (user: UserProfileData) => ({
+          firstName: user.first_name,
+          lastName: user.last_name,
+          avatar: user.avatar,
+          location: user.location,
+          nativeLanguage: user.native_language,
+          targetLanguage: user.target_language,
+          bio: user.bio,
+          id: user.id,
+        })
+      );
 
-      setUsers(userProfiles);
+      console.log("currentUser?.id:", currentUser?.id);
+
+      setUsers(userProfiles.filter((user) => user.id !== currentUser?.id));
 
       setError(null);
       setIsLoading(false);
@@ -69,7 +72,6 @@ const Users = () => {
         throw error;
       }
     }
-
   };
 
   const handleTabChange = (newTabValue: number) => {
@@ -78,18 +80,22 @@ const Users = () => {
   };
 
   useEffect(() => {
-    fetchUsers();
+    if (currentUser) {
+      fetchUsers();
+    }
   }, []);
 
   return (
     <Container maxWidth="lg">
       <h1>All users</h1>
       <Button onClick={logout}>Logout</Button>
-      <Navtab onChangeTab={handleTabChange}/>
+      <Navtab onChangeTab={handleTabChange} />
 
-      { users.length === 0 && !isLoading && (
-        <Typography variant="h4" sx={{ margin: "0 auto"}}>No users found</Typography>
-      ) }
+      {users.length === 0 && !isLoading && (
+        <Typography variant="h4" sx={{ margin: "0 auto" }}>
+          No users found
+        </Typography>
+      )}
 
       <Grid container spacing={2}>
         {users.map((user) => (
