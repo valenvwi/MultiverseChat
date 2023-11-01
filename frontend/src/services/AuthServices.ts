@@ -2,6 +2,7 @@ import axios from "axios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASEURL } from "../config"
+import { UserProfileProps } from "../types/userProfile";
 // import AuthServiceProps from "../types/auth";
 
 type AuthProps = {
@@ -9,9 +10,11 @@ type AuthProps = {
   isLoggedIn: boolean;
   logout: () => void;
   signup: (username: string, email: string, password: string) => Promise<any>;
+  currentUser: UserProfileProps | null;
 };
 
 export function useAuth(): AuthProps {
+  const [currentUser, setCurrentUser] = useState<UserProfileProps | null>(null);
   const navigate = useNavigate();
 
   const getInitialLoggedInValue = () => {
@@ -27,17 +30,27 @@ export function useAuth(): AuthProps {
     try {
       const userId = localStorage.getItem("user_id");
       const response = await axios.get(
-        `${BASEURL}/users/?user_id=${userId}`,
+        `${BASEURL}/users/${userId}`,
 
         {
           withCredentials: true,
         }
       );
       const userDetails = response.data;
-      console.log("User details: " + userDetails);
       localStorage.setItem("username", userDetails.username);
       setIsLoggedIn(true);
       localStorage.setItem("isLoggedIn", "true");
+      const userProfile: UserProfileProps = {
+        firstName: userDetails.first_name,
+        lastName: userDetails.last_name,
+        location: userDetails.location,
+        avatar: userDetails.avatar,
+        nativeLanguage: userDetails.native_language,
+        targetLanguage: userDetails.target_language,
+        bio: userDetails.bio
+      };
+      setCurrentUser(userProfile);
+      console.log(userProfile)
     } catch (err: any) {
       setIsLoggedIn(false);
       localStorage.setItem("isLoggedIn", "false");
@@ -57,7 +70,6 @@ export function useAuth(): AuthProps {
       );
 
       const user_id = response.data.user_id;
-      console.log(response.data);
       localStorage.setItem("isLoggedIn", "true");
       localStorage.setItem("user_id", user_id);
       setIsLoggedIn(true);
@@ -107,5 +119,6 @@ export function useAuth(): AuthProps {
     isLoggedIn,
     logout,
     signup,
+    currentUser,
   };
 }

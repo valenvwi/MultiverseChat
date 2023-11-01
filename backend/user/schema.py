@@ -7,13 +7,13 @@ user_list_docs = extend_schema(
     responses=UserProfileSerializer(many=True),
     parameters=[
         OpenApiParameter(
-            name="Native Language",
+            name="native_language",
             type=OpenApiTypes.STR,
             location=OpenApiParameter.QUERY,
             description="Search user by native language",
         ),
         OpenApiParameter(
-            name="Target Language",
+            name="target_language",
             type=OpenApiTypes.STR,
             location=OpenApiParameter.QUERY,
             description="Search user by target language",

@@ -24,26 +24,28 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     @user_list_docs
     def list(self, request):
         nativeLanguage = request.query_params.get("native_language")
+        print("nativeLanguage", nativeLanguage)
         targetLanguage = request.query_params.get("target_language")
 
         if nativeLanguage:
             try:
                 self.queryset = self.queryset.filter(native_language=nativeLanguage.capitalize())
                 if not self.queryset.exists():
-                    raise ValidationError(detail=f"user with nativeLanguage {nativeLanguage} not found")
+                    raise ValidationError(detail=f"Users with nativeLanguage {nativeLanguage} not found")
             except ValueError:
-                raise ValidationError(detail="user value error")
+                raise ValidationError(detail="User value error")
 
         if targetLanguage:
             try:
                 self.queryset = self.queryset.filter(target_language=targetLanguage.capitalize())
                 if not self.queryset.exists():
-                    raise ValidationError(detail=f"user with target language {targetLanguage} not found")
+                    raise ValidationError(detail=f"Users with target language {targetLanguage} not found")
             except ValueError:
-                raise ValidationError(detail="user value error")
+                raise ValidationError(detail="User value error")
 
         serializer = UserProfileSerializer(self.queryset, many=True)
         return Response(serializer.data)
+
 
     def create(self, request, format=None):
         user = request.user  # Get the authenticated user
