@@ -1,9 +1,7 @@
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import CssBaseline from "@mui/material/CssBaseline";
 import {
   Box,
-  Typography,
   Container,
   Button,
   TextField,
@@ -17,7 +15,6 @@ import {
   FormControlLabel,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
 import { useState } from "react";
 import Avatar from "@mui/material/Avatar";
@@ -25,19 +22,18 @@ import defaultAvatar from "../assets/default.png";
 import { UserProfileProps } from "../../types/userProfile";
 import { BASEURL } from "../../config";
 import languageOptions from "../../constants";
-import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
 import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useTheme } from "@mui/material/styles";
 
-const defaultTheme = createTheme();
 
 axios.defaults.withCredentials = true;
 
-const EditProfile = () => {
+type EditProfileProps = {
+  currentUser: UserProfileProps;
+};
+
+const EditProfile = ({currentUser}: EditProfileProps) => {
   const [avatarPreview, setAvatarPreview] = useState(defaultAvatar);
-  const currentUser = useFetchCurrentUser();
-  console.log(currentUser?.targetLanguage);
-  console.log("userId: ", currentUser?.id);
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
 
@@ -60,20 +56,21 @@ const EditProfile = () => {
 
     formData.append("first_name", userProfile.firstName);
     formData.append("last_name", userProfile.lastName);
-    if (userProfile.avatar) {
+    if (userProfile.avatar !== currentUser?.avatar) {
       formData.append("avatar", userProfile.avatar);
     }
     formData.append("location", userProfile.location);
     formData.append("native_language", userProfile.nativeLanguage);
     formData.append("target_language", userProfile.targetLanguage);
     formData.append("bio", userProfile.bio);
-    formData.append("active", userProfile.active);
+    formData.append("user", currentUser?.id);
+    // formData.append("active", userProfile.active);
 
     console.log("FormData: ", formData);
 
     try {
       const response = await axios.put<UserProfileProps>(
-        `${BASEURL}/users/${currentUser?.id}`,
+        `${BASEURL}/users/${currentUser?.id}/`,
         formData,
         {
           withCredentials: true,
@@ -94,7 +91,7 @@ const EditProfile = () => {
       nativeLanguage: currentUser?.nativeLanguage || "",
       targetLanguage: currentUser?.targetLanguage || "",
       bio: currentUser?.bio || "",
-      active: currentUser?.active || true,
+      // active: currentUser?.active || true,
     },
     validate: (values) => {
       const errors: Partial<typeof values> = {};
@@ -158,190 +155,179 @@ const EditProfile = () => {
     },
   });
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <Container component="main" maxWidth="md">
-        <CssBaseline />
+    <Container component="main" maxWidth="md">
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
         <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+          component="form"
+          noValidate
+          onSubmit={formik.handleSubmit}
+          encType="multipart/form-data"
+          sx={{ mt: 5 }}
         >
-          <Typography component="h1" variant="h6">
-            One more step and you are ready to go!
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={formik.handleSubmit}
-            encType="multipart/form-data"
-            sx={{ mt: 5 }}
-          >
-            <Grid container spacing={2}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flexDirection="column"
-                sx={{ margin: "auto", mb: 2 }}
-              >
-                <Avatar
-                  src={avatarPreview}
-                  sx={{ width: 128, height: 128, my: 2 }}
-                  alt="avatar"
+          <Grid container spacing={2}>
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              flexDirection="column"
+              sx={{ margin: "auto", mb: 2 }}
+            >
+              <Avatar
+                src={currentUser.avatar? currentUser.avatar: avatarPreview}
+                sx={{ width: 128, height: 128, my: 2 }}
+                alt="avatar"
+              />
+
+              <Button variant="contained" component="label">
+                Choose Avatar
+                <input
+                  name="avatar"
+                  accept="image/*"
+                  id="image"
+                  type="file"
+                  hidden
+                  onChange={(e) => {
+                    changeAvatar(e);
+                  }}
                 />
+              </Button>
+            </Box>
 
-                <Button variant="contained" component="label">
-                  Choose Avatar
-                  <input
-                    name="avatar"
-                    accept="image/*"
-                    id="image"
-                    type="file"
-                    hidden
-                    onChange={(e) => {
-                      changeAvatar(e);
-                    }}
-                  />
-                </Button>
-              </Box>
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                value={formik.values.firstName}
+                id="firstName"
+                label="First Name"
+                onChange={formik.handleChange}
+                error={!!formik.touched.firstName && !!formik.errors.firstName}
+                helperText={formik.touched.firstName && formik.errors.firstName}
+              />
+            </Grid>
 
-              <Grid item xs={12}>
-                <TextField
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                value={formik.values.lastName}
+                id="lastName"
+                label="Last Name"
+                onChange={formik.handleChange}
+                error={!!formik.touched.lastName && !!formik.errors.lastName}
+                helperText={formik.touched.lastName && formik.errors.lastName}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                required
+                fullWidth
+                value={formik.values.location}
+                id="location"
+                label="Location"
+                onChange={formik.handleChange}
+                error={!!formik.touched.location && !!formik.errors.location}
+                helperText={formik.touched.location && formik.errors.location}
+              />
+            </Grid>
+
+            <Grid item xs={12}>
+              <FormControl sx={{ width: "100%" }}>
+                <InputLabel id="demo-simple-select-helper-label">
+                  Native Language
+                </InputLabel>
+                <Select
                   required
                   fullWidth
-                  value={formik.values.firstName}
-                  id="firstName"
-                  label="First Name"
+                  id="nativeLanguage"
+                  name="nativeLanguage"
+                  label="Native Language"
+                  value={formik.values.nativeLanguage}
                   onChange={formik.handleChange}
                   error={
-                    !!formik.touched.firstName && !!formik.errors.firstName
+                    !!formik.touched.nativeLanguage &&
+                    !!formik.errors.nativeLanguage
                   }
-                  helperText={
-                    formik.touched.firstName && formik.errors.firstName
-                  }
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  value={formik.values.lastName}
-                  id="lastName"
-                  label="Last Name"
-                  onChange={formik.handleChange}
-                  error={!!formik.touched.lastName && !!formik.errors.lastName}
-                  helperText={formik.touched.lastName && formik.errors.lastName}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  value={formik.values.location}
-                  id="location"
-                  label="Location"
-                  onChange={formik.handleChange}
-                  error={!!formik.touched.location && !!formik.errors.location}
-                  helperText={formik.touched.location && formik.errors.location}
-                />
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControl sx={{ width: "100%" }}>
-                  <InputLabel id="demo-simple-select-helper-label">
-                    Native Language
-                  </InputLabel>
-                  <Select
-                    required
-                    fullWidth
-                    id="nativeLanguage"
-                    name="nativeLanguage"
-                    label="Native Language"
-                    value={formik.values.nativeLanguage}
-                    onChange={formik.handleChange}
-                    error={
-                      !!formik.touched.nativeLanguage &&
-                      !!formik.errors.nativeLanguage
-                    }
-                  >
-                    {languageOptions.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12}>
-                <FormControl sx={{ width: "100%" }}>
-                  <InputLabel id="demo-simple-select-helper-label">
-                    Target Language
-                  </InputLabel>
-                  <Select
-                    required
-                    fullWidth
-                    id="targetLanguage"
-                    name="targetLanguage"
-                    label="Target Language"
-                    value={formik.values.targetLanguage}
-                    onChange={formik.handleChange}
-                    error={
-                      !!formik.touched.targetLanguage &&
-                      !!formik.errors.targetLanguage
-                    }
-                  >
-                    {languageOptions.map((option) => (
-                      <MenuItem key={option} value={option}>
-                        {option}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grid>
-
-              <Grid item xs={12}>
-                <TextField
-                  rows={6}
-                  required
-                  fullWidth
-                  multiline
-                  id="bio"
-                  label="Bio"
-                  value={formik.values.bio}
-                  onChange={formik.handleChange}
-                  error={!!formik.touched.bio && !!formik.errors.bio}
-                  helperText={formik.touched.bio && formik.errors.bio}
-                  autoComplete="bio"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <FormGroup>
-                  <FormControlLabel
-                    control={<Switch aria-label="login switch" />}
-                    label={currentUser?.active ? "Public" : "Private"}
-                  />
-                </FormGroup>
-              </Grid>
+                >
+                  {languageOptions.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
             </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
-              Next
-            </Button>
-          </Box>
+
+            <Grid item xs={12}>
+              <FormControl sx={{ width: "100%" }}>
+                <InputLabel id="demo-simple-select-helper-label">
+                  Target Language
+                </InputLabel>
+                <Select
+                  required
+                  fullWidth
+                  id="targetLanguage"
+                  name="targetLanguage"
+                  label="Target Language"
+                  value={formik.values.targetLanguage}
+                  onChange={formik.handleChange}
+                  error={
+                    !!formik.touched.targetLanguage &&
+                    !!formik.errors.targetLanguage
+                  }
+                >
+                  {languageOptions.map((option) => (
+                    <MenuItem key={option} value={option}>
+                      {option}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={12}>
+              <TextField
+                rows={6}
+                required
+                fullWidth
+                multiline
+                id="bio"
+                label="Bio"
+                value={formik.values.bio}
+                onChange={formik.handleChange}
+                error={!!formik.touched.bio && !!formik.errors.bio}
+                helperText={formik.touched.bio && formik.errors.bio}
+                autoComplete="bio"
+              />
+            </Grid>
+            {/* <Grid item xs={12}>
+              <FormGroup>
+                <FormControlLabel
+                  control={<Switch aria-label="login switch" />}
+                  label={currentUser?.active ? "Public" : "Private"}
+                />
+              </FormGroup>
+            </Grid> */}
+          </Grid>
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+          >
+            Next
+          </Button>
         </Box>
-        {!isBigScreen && <AppBottomNavBar />}
-      </Container>
-    </ThemeProvider>
+      </Box>
+      {!isBigScreen && <AppBottomNavBar />}
+    </Container>
   );
 };
 

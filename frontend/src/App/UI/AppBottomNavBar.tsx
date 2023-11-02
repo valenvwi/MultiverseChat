@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 const AppBottomNavBar = () => {
   return (
     <Paper
-      sx={{ position: "fixed", bottom: 0, left: 0, right: 0 }}
+      sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 6 }}
       elevation={3}
     >
       <BottomNavigation showLabels>

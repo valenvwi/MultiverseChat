@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Link,
   Typography,
 } from "@mui/material";
@@ -11,7 +10,6 @@ const FinishProfileSetup = () => {
   const firstName = localStorage.getItem("first_name");
   return (
     <Container>
-      <CssBaseline />
       <Box
         sx={{
           marginTop: 8,

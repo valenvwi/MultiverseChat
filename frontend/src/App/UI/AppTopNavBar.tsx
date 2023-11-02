@@ -23,6 +23,7 @@ const settings = ["Edit Profile", "Logout"];
 
 function AppTopNavBar() {
   const { logout, isLoggedIn } = useAuth();
+  console.log("isLoggedIn ==========", isLoggedIn);
   const currentUser = useFetchCurrentUser();
   console.log(currentUser);
   console.log(isLoggedIn);

@@ -25,6 +25,7 @@ export function useAuth(): AuthProps {
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(
     getInitialLoggedInValue
   );
+  console.log("isLoggedIn", isLoggedIn);
 
   const login = async (username: string, password: string) => {
     try {

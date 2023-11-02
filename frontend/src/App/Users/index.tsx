@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import UserProfile from "./UserProfile";
-import { useAuth } from "../../services/AuthServices";
-import { Button, Container, Grid, Typography } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import { UserProfileProps, UserProfileData } from "../../types/userProfile";
 import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import Navtab from "./Navtab";
@@ -12,25 +11,23 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const Users = () => {
-  const { logout } = useAuth();
   const [users, setUsers] = useState<UserProfileProps[]>([]);
   const [error, setError] = useState<Error | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const jwtAxios = useAxiosWithJwtInterceptor();
   const currentUser = useFetchCurrentUser();
-  console.log(currentUser?.targetLanguage);
   const [currentTab, setCurrentTab] = useState(0);
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (showGoalMatch: boolean) => {
     setIsLoading(true);
     let apiEndpoint = `${BASEURL}/users/`;
 
-    if (currentTab === 0) {
-      apiEndpoint += `?target_language=${currentUser?.targetLanguage}`;
-    } else {
+    if (showGoalMatch) {
       apiEndpoint += `?native_language=${currentUser?.targetLanguage}&target_language=${currentUser?.nativeLanguage}`;
+    } else {
+      apiEndpoint += `?target_language=${currentUser?.targetLanguage}`;
     }
 
     try {
@@ -51,8 +48,6 @@ const Users = () => {
         })
       );
 
-      console.log("currentUser?.id:", currentUser?.id);
-
       setUsers(userProfiles.filter((user) => user.id !== currentUser?.id));
 
       setError(null);
@@ -69,17 +64,17 @@ const Users = () => {
 
   const handleTabChange = (newTabValue: number) => {
     setCurrentTab(newTabValue);
-    fetchUsers();
   };
 
   useEffect(() => {
     if (currentUser) {
-      fetchUsers();
+      fetchUsers(currentTab === 0);
     }
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentTab, currentUser]);
 
   return (
-    <Container maxWidth="xl">
+    <Container component="main" maxWidth="xl">
       <br />
       <Navtab onChangeTab={handleTabChange} />
 

@@ -11,15 +11,18 @@ import EditProfile from "./Users/EditProfile";
 import AppTopNavBar from "./UI/AppTopNavBar";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { CssBaseline } from "@mui/material";
+import { useFetchCurrentUser } from "../Utils/useFetchCurrentUser";
+
 
 function App() {
-  const isLoggedIn = localStorage.getItem("isLoggedIn");
-  console.log("isLoggedIn: ", isLoggedIn)
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const currentUser = useFetchCurrentUser();
 
   return (
     <BrowserRouter>
+      <CssBaseline />
       { isBigScreen && <AppTopNavBar /> }
       <Routes>
         <Route
@@ -34,9 +37,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
         <Route path="/setupProfile" element={<SetupProfile />} />
         <Route path="/finishSetup" element={<FinishProfileSetup />} />
-        <Route path="/editProfile" element={<EditProfile />} />
+        <Route path="/editProfile" element={currentUser ? <EditProfile currentUser={currentUser} />: <h5>Loading...</h5>} />
       </Routes>
-      {/* { isLoggedIn && <AppBottomNavigation /> } */}
     </BrowserRouter>
   );
 }

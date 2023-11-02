@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "corsheaders",
     'rest_framework_simplejwt',
     'user',
+    'chat',
 ]
 
 MIDDLEWARE = [
@@ -40,7 +41,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
 ]
 
 ROOT_URLCONF = 'base.urls'

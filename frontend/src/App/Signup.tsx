@@ -1,8 +1,15 @@
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../services/AuthServices";
-import CssBaseline from "@mui/material/CssBaseline";
-import { Box, Grid, Typography, Container, Link, TextField, Button } from "@mui/material";
+import {
+  Box,
+  Grid,
+  Typography,
+  Container,
+  Link,
+  TextField,
+  Button,
+} from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const defaultTheme = createTheme();
@@ -67,7 +74,6 @@ const Register = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
@@ -135,8 +141,14 @@ const Register = () => {
                   id="confirmPassword"
                   value={formik.values.confirmPassword}
                   onChange={formik.handleChange}
-                  error={!!formik.touched.confirmPassword && !!formik.errors.confirmPassword}
-                  helperText={formik.touched.confirmPassword && formik.errors.confirmPassword}
+                  error={
+                    !!formik.touched.confirmPassword &&
+                    !!formik.errors.confirmPassword
+                  }
+                  helperText={
+                    formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword
+                  }
                 />
               </Grid>
             </Grid>
@@ -159,7 +171,6 @@ const Register = () => {
         </Box>
       </Container>
     </ThemeProvider>
-
   );
 };
 

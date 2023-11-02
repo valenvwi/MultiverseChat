@@ -5,7 +5,6 @@ import {
   Box,
   Button,
   Container,
-  CssBaseline,
   Grid,
   Link,
   TextField,
@@ -50,7 +49,6 @@ const Login = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="md">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,

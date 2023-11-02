@@ -1,6 +1,5 @@
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom";
-import CssBaseline from "@mui/material/CssBaseline";
 import {
   Box,
   Typography,
@@ -146,7 +145,6 @@ const SetupProfile = () => {
   return (
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="md">
-        <CssBaseline />
         <Box
           sx={{
             marginTop: 8,
