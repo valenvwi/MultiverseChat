@@ -17,17 +17,17 @@ import { useState } from "react";
 
 const pages = [
   { name: "Find a partner", path: "/" },
-  { name: "Your Chat", path: "/" },
+  { name: "Your Chat", path: "/chats" },
 ];
 const settings = ["Edit Profile", "Logout"];
 
 function AppTopNavBar() {
   const { logout, isLoggedIn } = useAuth();
-  console.log("isLoggedIn ==========", isLoggedIn);
+  // console.log("isLoggedIn ==========", isLoggedIn);
   const currentUser = useFetchCurrentUser();
-  console.log(currentUser);
-  console.log(isLoggedIn);
-  console.log(typeof isLoggedIn);
+  // console.log(currentUser);
+  // console.log(isLoggedIn);
+  // console.log(typeof isLoggedIn);
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -87,7 +87,7 @@ function AppTopNavBar() {
               <Box sx={{ flexGrow: 0 }}>
                 <Tooltip title="Open settings">
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="user avatar" src={currentUser?.avatar} />
+                    <Avatar src={currentUser?.avatar} />
                   </IconButton>
                 </Tooltip>
                 <Menu

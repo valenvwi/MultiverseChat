@@ -3,9 +3,13 @@ from django.db import models
 
 
 class Chatroom(models.Model):
-    owner_id = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="owner_id")
-    participant_id = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="participant_id")
+    owner = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="owner", null=True)
+    participant = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, related_name="participant", null=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        app_label = 'chat'
 
 
 class Message(models.Model):
@@ -13,3 +17,6 @@ class Message(models.Model):
     sender = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     content = models.TextField()
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        app_label = 'chat'

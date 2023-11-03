@@ -11,7 +11,12 @@ const AppBottomNavBar = () => {
       elevation={3}
     >
       <BottomNavigation showLabels>
-        <BottomNavigationAction label="Messages" icon={<ChatIcon />} />
+        <BottomNavigationAction
+          label="Messages"
+          icon={<ChatIcon />}
+          component={Link}
+          to="/chats"
+        />
         <BottomNavigationAction
           label="Home"
           icon={<HomeIcon />}

@@ -9,12 +9,31 @@ import {
 } from "@mui/material";
 import React from "react";
 import { UserProfileProps } from "../../types/userProfile";
+import { BASEURL } from "../../config";
+import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   user: UserProfileProps;
 };
 
 const UserProfile: React.FC<Props> = ({ user }) => {
+  const jwtAxios = useAxiosWithJwtInterceptor();
+  const navigate = useNavigate();
+
+  const createChat = async () => {
+    try {
+      const response = await jwtAxios.post(`${BASEURL}/chatrooms/`, {
+        participant: user.id,
+        withCredentials: true,
+      });
+      console.log(response.data);
+      navigate("/chats");
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <>
       <Card
@@ -36,7 +55,7 @@ const UserProfile: React.FC<Props> = ({ user }) => {
           >
             <CardMedia
               component="img"
-              src={`http://127.0.0.1:8000/${user.avatar}`}
+              src={`http://127.0.0.1:8000${user.avatar}`}
               sx={{
                 width: "95%",
                 margin: { xs: "10px auto", md: "0px 0px 0px 24px" },
@@ -101,6 +120,7 @@ const UserProfile: React.FC<Props> = ({ user }) => {
                 sx={{
                   margin: "0 auto",
                 }}
+                onClick={createChat}
               >
                 Send a message
               </Button>

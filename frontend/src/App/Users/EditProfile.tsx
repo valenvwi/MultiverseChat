@@ -25,14 +25,13 @@ import languageOptions from "../../constants";
 import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useTheme } from "@mui/material/styles";
 
-
 axios.defaults.withCredentials = true;
 
 type EditProfileProps = {
   currentUser: UserProfileProps;
 };
 
-const EditProfile = ({currentUser}: EditProfileProps) => {
+const EditProfile = ({ currentUser }: EditProfileProps) => {
   const [avatarPreview, setAvatarPreview] = useState(defaultAvatar);
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
@@ -179,7 +178,7 @@ const EditProfile = ({currentUser}: EditProfileProps) => {
               sx={{ margin: "auto", mb: 2 }}
             >
               <Avatar
-                src={currentUser.avatar? currentUser.avatar: avatarPreview}
+                src={currentUser.avatar ? currentUser.avatar : avatarPreview}
                 sx={{ width: 128, height: 128, my: 2 }}
                 alt="avatar"
               />

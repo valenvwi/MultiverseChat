@@ -7,13 +7,13 @@ import SetupProfile from "./SetupProfile";
 import ProtectedRoute from "../services/ProtectedRoute";
 import FinishProfileSetup from "./FinishProfileSetup";
 import EditProfile from "./Users/EditProfile";
-// import AppBottomNavigation from "./UI/AppBottomNavigation"
+import AppBottomNavigation from "./UI/AppBottomNavigation"
 import AppTopNavBar from "./UI/AppTopNavBar";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { CssBaseline } from "@mui/material";
 import { useFetchCurrentUser } from "../Utils/useFetchCurrentUser";
-
+import Chats from "./Chats/index";
 
 function App() {
   const theme = useTheme();
@@ -23,7 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <CssBaseline />
-      { isBigScreen && <AppTopNavBar /> }
+      {isBigScreen && <AppTopNavBar />}
       <Routes>
         <Route
           path="/"
@@ -33,11 +33,28 @@ function App() {
             </ProtectedRoute>
           }
         />
+        <Route
+          path="/chats"
+          element={
+            <ProtectedRoute>
+              <Chats />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/setupProfile" element={<SetupProfile />} />
         <Route path="/finishSetup" element={<FinishProfileSetup />} />
-        <Route path="/editProfile" element={currentUser ? <EditProfile currentUser={currentUser} />: <h5>Loading...</h5>} />
+        <Route
+          path="/editProfile"
+          element={
+            currentUser ? (
+              <EditProfile currentUser={currentUser} />
+            ) : (
+              <h5>Loading...</h5>
+            )
+          }
+        />
       </Routes>
     </BrowserRouter>
   );

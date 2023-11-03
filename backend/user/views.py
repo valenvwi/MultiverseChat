@@ -16,6 +16,38 @@ from .serializers import (
 from .models import UserProfile, User
 from .schema import user_list_docs
 
+
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            username = serializer.validated_data["username"]
+
+            forbidden_usernames = ["admin", "root", "superuser"]
+            if username is forbidden_usernames:
+                return Response({"error": "Username not allowed"}, status=status.HTTP_409_CONFLICT)
+
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        errors = serializer.errors
+        if "username" in errors and "non_field_errors" not in errors:
+            return Response({"error": "Username already exists"}, status=status.HTTP_409_CONFLICT)
+
+        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class LogOutAPIView(APIView):
+    def post(self, request, format=None):
+        response = Response("Logged out successfully")
+        print("Log out response", response)
+
+        response.set_cookie("refresh_token", "", expires=0)
+        response.set_cookie("access_token", "", expires=0)
+
+        return response
+
+
 class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     serializer_class = UserProfileSerializer
@@ -28,8 +60,10 @@ class UserProfileViewSet(viewsets.ModelViewSet):
         targetLanguage = request.query_params.get("target_language")
 
         if nativeLanguage:
+            # Add the filter later for user that already have chatroom with the current user
             try:
                 self.queryset = self.queryset.filter(native_language=nativeLanguage.capitalize(), active=True)
+                self.queryset = self.queryset.exclude(user=request.user)
                 if not self.queryset.exists():
                     raise ValidationError(detail=f"Users with nativeLanguage {nativeLanguage} not found")
             except ValueError:
@@ -72,40 +106,9 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
 
-class RegisterView(APIView):
-    def post(self, request):
-        serializer = RegisterSerializer(data=request.data)
-        if serializer.is_valid():
-            username = serializer.validated_data["username"]
-
-            forbidden_usernames = ["admin", "root", "superuser"]
-            if username is forbidden_usernames:
-                return Response({"error": "Username not allowed"}, status=status.HTTP_409_CONFLICT)
-
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        errors = serializer.errors
-        if "username" in errors and "non_field_errors" not in errors:
-            return Response({"error": "Username already exists"}, status=status.HTTP_409_CONFLICT)
-
-        return Response(errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class LogOutAPIView(APIView):
-    def post(self, request, format=None):
-        response = Response("Logged out successfully")
-        print("Log out response", response)
-
-        response.set_cookie("refresh_token", "", expires=0)
-        response.set_cookie("access_token", "", expires=0)
-
-        return response
-
-
-
 class JWTSetCookieMixin:
     def finalize_response(self, request, response, *args, **kwargs):
+        print("Data in JWTSetCookieMixin: ",response.data)
         if response.data.get("refresh"):
             response.set_cookie(
                 settings.SIMPLE_JWT["REFRESH_TOKEN_NAME"],
@@ -122,7 +125,8 @@ class JWTSetCookieMixin:
                 httponly=True,
                 samesite=settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
             )
-            del response.data["access"]
+
+        print("Final response: ", response)
 
         return super().finalize_response(request, response, *args, **kwargs)
 
