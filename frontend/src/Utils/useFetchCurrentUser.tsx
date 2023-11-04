@@ -2,14 +2,20 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { BASEURL } from "../config";
 import { UserProfileProps } from "../types/userProfile";
+import { useAuthStore } from "../App/store/auth-context";
 
 export function useFetchCurrentUser(): UserProfileProps | null {
   const [currentUser, setCurrentUser] = useState<UserProfileProps | null>(null);
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+  console.log(currentUserId);
 
   useEffect(() => {
+    if (!currentUserId) {
+      return;
+    }
     const fetchCurrentUser = async () => {
       try {
-        const userId = localStorage.getItem("user_id");
+        const userId = currentUserId;
         const response = await axios.get(`${BASEURL}/users/${userId}/`, {
           withCredentials: true,
         });
@@ -31,7 +37,7 @@ export function useFetchCurrentUser(): UserProfileProps | null {
     };
 
     fetchCurrentUser();
-  }, []);
+  }, [currentUserId]);
 
   return currentUser;
 }

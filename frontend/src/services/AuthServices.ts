@@ -1,18 +1,17 @@
 import axios from "axios";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASEURL } from "../config";
+import { useAuthStore } from "../App/store/auth-context";
 
 type AuthProps = {
-  userId: string | null;
   login: (username: string, password: string) => any;
   logout: () => void;
   signup: (username: string, email: string, password: string) => Promise<any>;
 };
 
 export function useAuth(): AuthProps {
-  const [userId, setUserId] = useState<string | null>(null);
   const navigate = useNavigate();
+  const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
 
   const login = async (username: string, password: string) => {
     try {
@@ -26,12 +25,8 @@ export function useAuth(): AuthProps {
       );
 
       const user_id = response.data.user_id;
-      localStorage.setItem("isLoggedIn", "true");
-      setUserId(user_id);
+      setCurrentUserId(user_id);
       console.log("user_id", user_id);
-      localStorage.setItem("user_id", user_id);
-      // need to fix this
-      return user_id;
     } catch (err: any) {
       return err.response.status;
     }
@@ -68,7 +63,6 @@ export function useAuth(): AuthProps {
   };
 
   return {
-    userId,
     login,
     logout,
     signup,

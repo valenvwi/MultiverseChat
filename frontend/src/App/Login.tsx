@@ -11,13 +11,11 @@ import {
   Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useAuthStore } from "./store/auth-context";
 
-const Login = ({
-  setIsLoggedIn,
-}: {
-  setIsLoggedIn: (value: boolean) => void;
-}) => {
+const Login = () => {
   const defaultTheme = createTheme();
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const { login } = useAuth();
   const navigate = useNavigate();

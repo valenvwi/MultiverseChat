@@ -10,9 +10,6 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  FormGroup,
-  Switch,
-  FormControlLabel,
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import axios from "axios";

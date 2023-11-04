@@ -1,12 +1,11 @@
 import { Navigate } from "react-router-dom";
 import React from "react";
 
-type ProtectedRouteProps = {
-  children: React.ReactNode;
-  isLoggedIn: boolean;
-};
+import { useAuthStore } from "../App/store/auth-context";
 
-const ProtectedRoute = ({ children, isLoggedIn }: ProtectedRouteProps) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+
   if (!isLoggedIn) {
     return <Navigate to="/login" replace={true} />;
   }

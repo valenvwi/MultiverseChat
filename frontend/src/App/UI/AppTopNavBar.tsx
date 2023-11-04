@@ -14,6 +14,7 @@ import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../services/AuthServices";
 import { useState } from "react";
+import { useAuthStore } from "../store/auth-context";
 
 const pages = [
   { name: "Find a partner", path: "/" },
@@ -21,17 +22,15 @@ const pages = [
 ];
 const settings = ["Edit Profile", "Logout"];
 
-type AppTopNavBarProps = {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (value: boolean) => void;
-};
-
-function AppTopNavBar({ isLoggedIn, setIsLoggedIn }: AppTopNavBarProps) {
+function AppTopNavBar() {
   const { logout } = useAuth();
   const currentUser = useFetchCurrentUser();
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
