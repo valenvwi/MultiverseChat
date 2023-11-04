@@ -31,6 +31,7 @@ function AppTopNavBar() {
 
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+  const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -45,6 +46,7 @@ function AppTopNavBar() {
       navigate("/editProfile");
     } else if (setting === "Logout") {
       setIsLoggedIn(false);
+      setCurrentUserId(null);
       logout();
     }
   };

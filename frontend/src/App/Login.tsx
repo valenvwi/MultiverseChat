@@ -11,11 +11,9 @@ import {
   Typography,
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useAuthStore } from "./store/auth-context";
 
 const Login = () => {
   const defaultTheme = createTheme();
-  const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
 
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -44,7 +42,6 @@ const Login = () => {
           password: "Invalid username or password",
         });
       } else {
-        setIsLoggedIn(true);
         navigate("/");
       }
     },
