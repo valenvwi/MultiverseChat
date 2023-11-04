@@ -12,7 +12,11 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
-const Login = () => {
+const Login = ({
+  setIsLoggedIn,
+}: {
+  setIsLoggedIn: (value: boolean) => void;
+}) => {
   const defaultTheme = createTheme();
 
   const { login } = useAuth();
@@ -42,6 +46,7 @@ const Login = () => {
           password: "Invalid username or password",
         });
       } else {
+        setIsLoggedIn(true);
         navigate("/");
       }
     },

@@ -21,13 +21,14 @@ const pages = [
 ];
 const settings = ["Edit Profile", "Logout"];
 
-function AppTopNavBar() {
-  const { logout, isLoggedIn } = useAuth();
-  // console.log("isLoggedIn ==========", isLoggedIn);
+type AppTopNavBarProps = {
+  isLoggedIn: boolean;
+  setIsLoggedIn: (value: boolean) => void;
+};
+
+function AppTopNavBar({ isLoggedIn, setIsLoggedIn }: AppTopNavBarProps) {
+  const { logout } = useAuth();
   const currentUser = useFetchCurrentUser();
-  // console.log(currentUser);
-  // console.log(isLoggedIn);
-  // console.log(typeof isLoggedIn);
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
@@ -44,6 +45,7 @@ function AppTopNavBar() {
     if (setting === "Edit Profile") {
       navigate("/editProfile");
     } else if (setting === "Logout") {
+      setIsLoggedIn(false);
       logout();
     }
   };
