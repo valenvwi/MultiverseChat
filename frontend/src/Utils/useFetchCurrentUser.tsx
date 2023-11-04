@@ -5,14 +5,15 @@ import { UserProfileProps } from "../types/userProfile";
 import { useAuthStore } from "../App/store/auth-context";
 
 export function useFetchCurrentUser(): UserProfileProps | null {
-  const [currentUser, setCurrentUser] = useState<UserProfileProps | null>(null);
   const currentUserId = useAuthStore((state) => state.currentUserId);
+  // need to fix the default value not null
+  const [currentUser, setCurrentUser] = useState<UserProfileProps | null>(null);
   console.log(currentUserId);
 
   useEffect(() => {
-    if (!currentUserId) {
-      return;
-    }
+    // if (!currentUserId) {
+    //   return;
+    // }
     const fetchCurrentUser = async () => {
       try {
         const userId = currentUserId;

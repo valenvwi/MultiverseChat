@@ -9,10 +9,8 @@ import { BASEURL } from "../../config";
 import { useState } from "react";
 import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
+import { useChatStore } from "../store/chat-context";
 
-type ChatroomsListProps = {
-  onChangeChatroom: (chatId: number) => void;
-};
 
 type ChatroomsListType = {
   id: number;
@@ -20,7 +18,9 @@ type ChatroomsListType = {
   participant: number;
 };
 
-const ChatroomsList: React.FC<ChatroomsListProps> = ({ onChangeChatroom }) => {
+const ChatroomsList = () => {
+  const setChatroomId = useChatStore((state) => state.setChatroomId);
+
   const [chatList, setChatList] = useState<ChatroomsListType>([]);
   const jwtAxios = useAxiosWithJwtInterceptor();
   const currentUser = useFetchCurrentUser();
@@ -49,7 +49,7 @@ const ChatroomsList: React.FC<ChatroomsListProps> = ({ onChangeChatroom }) => {
       </ListItem>
       {chatList.map((chat) => (
         <ListItem key={chat.id} disablePadding>
-          <ListItemButton onClick={() => onChangeChatroom(chat.id)}>
+          <ListItemButton onClick={() => setChatroomId(chat.id)}>
             <ListItemText>
               {chat.owner.id === currentUser?.id
                 ? chat.participant.username

@@ -1,23 +1,45 @@
-import { Button, Container, TextField, styled } from "@mui/material";
+import { Button, TextField, styled } from "@mui/material";
 import { useState } from "react";
 import { BASEURL, WS_ROOT } from "../../config";
 import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import useWebSocket from "react-use-websocket";
+import Message from "./Message";
+import ChatHeader from "./ChatHeader";
+import { useChatStore } from "../store/chat-context";
 
 
 type MessagesProps = {
-  id?: number;
-  content?: string;
-  sender?: number;
+  id: number;
+  content: string;
+  sender: number;
 };
 
+
+const Container = styled("div")({
+  flexGrow: 1,
+  display: "flex",
+  flexDirection: "column",
+  padding: "16px",
+  gap: "16px",
+});
+
+const MessagesContainer = styled("div")({
+  // flexGrow: 1,
+  // height: 0,
+  // overflowY: "auto",
+  // display: "flex",
+  // flexDirection: "column",
+  // gap: "8px",
+});
 
 const InputContainer = styled("div")({
   display: "flex",
   gap: "16px",
 });
 
-const Chatroom = ({ chatroomId }: { chatroomId: number }) => {
+const Chatroom = () => {
+  const chatroomId = useChatStore((state) => state.chatroomId);
+
   const [messages, setMessages] = useState<MessagesProps[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const jwtAxios = useAxiosWithJwtInterceptor();
@@ -30,6 +52,7 @@ const Chatroom = ({ chatroomId }: { chatroomId: number }) => {
         `${BASEURL}/messages/?chatroom_id=${chatroomId}`
       );
       setMessages(response.data);
+      console.log("Using fetchMessages: ",{response})
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -46,40 +69,6 @@ const Chatroom = ({ chatroomId }: { chatroomId: number }) => {
     },
   });
 
-  // const sendMessage = async () => {
-  //   setMessages([
-  //     ...messages,
-  //     {
-  //       content: inputMessage,
-  //     },
-  //   ]);
-  //   setInputMessage("");
-
-  //   try {
-  //     setTimeout(async () => {
-  //       try {
-  //         const response = await jwtAxios.post(`${BASEURL}/messages/`, {
-  //           chatroom_id: chatroomId || undefined,
-  //           content: inputMessage,
-  //         });
-  //         console.log(response);
-
-  //         fetchMessages(chatroomId);
-  //       } catch (error) {
-  //         console.error("Error sending message:", error);
-  //         setMessages([
-  //           ...messages,
-  //           {
-  //             content:
-  //               "Sorry, I'm having trouble communicating with the server. 😔",
-  //           },
-  //         ]);
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.error("Error sending message:", error);
-  //   }
-  // };
 
   const sendMessage = () => {
     sendJsonMessage({
@@ -92,11 +81,13 @@ const Chatroom = ({ chatroomId }: { chatroomId: number }) => {
 
   return (
     <Container>
+      <ChatHeader />
+      <MessagesContainer>
       {messages.map((message: MessagesProps) => (
-        <div key={message.id}>
-          <div>{message.content}</div>
-        </div>
+        <Message key={message.id} content={message.content} sender={message.sender} />
       ))}
+      </MessagesContainer>
+
       <InputContainer>
         <TextField
           sx={{ flexGrow: 1, backgroundColor: "white" }}
