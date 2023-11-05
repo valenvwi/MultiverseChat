@@ -7,13 +7,11 @@ import Message from "./Message";
 import ChatHeader from "./ChatHeader";
 import { useChatStore } from "../store/chat-context";
 
-
 type MessagesProps = {
   id: number;
   content: string;
   sender: number;
 };
-
 
 const Container = styled("div")({
   flexGrow: 1,
@@ -45,14 +43,13 @@ const Chatroom = () => {
   const jwtAxios = useAxiosWithJwtInterceptor();
   const socketUrl = `${WS_ROOT}/${chatroomId}/`;
 
-
   const fetchMessages = async (chatroomId: number) => {
     try {
       const response = await jwtAxios.get(
         `${BASEURL}/messages/?chatroom_id=${chatroomId}`
       );
       setMessages(response.data);
-      console.log("Using fetchMessages: ",{response})
+      console.log("Using fetchMessages: ", { response });
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -64,11 +61,10 @@ const Chatroom = () => {
     },
     onMessage: (event) => {
       const newMessage = JSON.parse(event.data);
-      setMessages((oldMessages) =>[...oldMessages, newMessage.new_message]);
-      console.log("Using onMessage: ",{newMessage});
+      setMessages((oldMessages) => [...oldMessages, newMessage.new_message]);
+      console.log("Using onMessage: ", { newMessage });
     },
   });
-
 
   const sendMessage = () => {
     sendJsonMessage({
@@ -78,14 +74,17 @@ const Chatroom = () => {
     setInputMessage("");
   };
 
-
   return (
     <Container>
       <ChatHeader />
       <MessagesContainer>
-      {messages.map((message: MessagesProps) => (
-        <Message key={message.id} content={message.content} sender={message.sender} />
-      ))}
+        {messages.map((message: MessagesProps) => (
+          <Message
+            key={message.id}
+            content={message.content}
+            sender={message.sender}
+          />
+        ))}
       </MessagesContainer>
 
       <InputContainer>

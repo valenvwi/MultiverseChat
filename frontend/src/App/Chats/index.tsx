@@ -11,12 +11,11 @@ const Chats = () => {
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
   console.log("ChatroomId: ", chatroomId);
 
-
   if (isBigScreen) {
     return (
       <>
         <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-          <Grid item md={4}>
+          <Grid item md={4} sx={{ display: "flex" }}>
             <ChatroomsList />
           </Grid>
 
@@ -30,15 +29,8 @@ const Chats = () => {
 
   return (
     <>
-      <Grid
-        container
-        sx={{ flexGrow: 1, flexDirection: "column " }}
-      >
-        <Grid
-          item
-          xs={12}
-          sx={{ display: "flex", flexDirection: "column", flex: "1" }}
-        >
+      <Grid container sx={{ flexGrow: 1, flexDirection: "column " }}>
+        <Grid item sx={{ display: "flex", flexDirection: "column", flex: "1" }}>
           {chatroomId === null ? <ChatroomsList /> : <Chatroom />}
         </Grid>
 

@@ -10,13 +10,25 @@ import { useState } from "react";
 import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
 import { useChatStore } from "../store/chat-context";
-
+import styled from "@mui/material/styles/styled";
+import { List } from "@mui/material";
+import { Chat } from "@mui/icons-material";
+import ChatroomListItem from "./ChatroomListItem";
 
 type ChatroomsListType = {
   id: number;
   owner: number;
   participant: number;
 };
+
+const StyledList = styled(List)(({ theme }) => ({
+  backgroundColor: theme.palette.background.paper,
+  borderRadius: theme.spacing(1),
+  border: "1px solid rgba(0, 0, 0, 0.12)",
+  flexShrink: 0,
+  flexGrow: 1,
+  overflowY: "auto",
+}));
 
 const ChatroomsList = () => {
   const setChatroomId = useChatStore((state) => state.setChatroomId);
@@ -44,20 +56,26 @@ const ChatroomsList = () => {
 
   return (
     <>
-      <ListItem sx={{ mt: 1 }}>
-        <Typography sx={{ fontWeight: 700 }}>ChatList</Typography>
-      </ListItem>
-      {chatList.map((chat) => (
-        <ListItem key={chat.id} disablePadding>
-          <ListItemButton onClick={() => setChatroomId(chat.id)}>
-            <ListItemText>
-              {chat.owner.id === currentUser?.id
-                ? chat.participant.username
-                : chat.owner.username}
-            </ListItemText>
-          </ListItemButton>
+      <StyledList>
+        <ListItem sx={{ mt: 1 }}>
+          <Typography sx={{ fontWeight: 700, margin: "10px auto" }}>
+            All Chats
+          </Typography>
         </ListItem>
-      ))}
+        {chatList.map((chat) => (
+          <ListItem key={chat.id} disablePadding>
+            <ChatroomListItem
+              key={chat.id}
+              chatroom={chat}
+              userId={
+                chat.owner.id === currentUser?.id
+                  ? chat.participant.id
+                  : chat.owner.id
+              }
+            />
+          </ListItem>
+        ))}
+      </StyledList>
     </>
   );
 };
