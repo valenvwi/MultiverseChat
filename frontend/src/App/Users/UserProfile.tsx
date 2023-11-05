@@ -12,6 +12,7 @@ import { UserProfileProps } from "../../types/userProfile";
 import { BASEURL } from "../../config";
 import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import { useNavigate } from "react-router-dom";
+import { useChatStore } from "../store/chat";
 
 type Props = {
   user: UserProfileProps;
@@ -20,6 +21,7 @@ type Props = {
 const UserProfile: React.FC<Props> = ({ user }) => {
   const jwtAxios = useAxiosWithJwtInterceptor();
   const navigate = useNavigate();
+  const setChatroomId = useChatStore((state) => state.setChatroomId);
 
   const createChat = async () => {
     try {
@@ -27,8 +29,9 @@ const UserProfile: React.FC<Props> = ({ user }) => {
         participant: user.id,
         withCredentials: true,
       });
-      console.log(response.data);
+      const chatroomId = response.data.id;
       navigate("/chats");
+      setChatroomId(chatroomId);
     } catch (err) {
       console.log(err);
     }

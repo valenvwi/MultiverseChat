@@ -1,8 +1,8 @@
 import ChatroomsList from "./ChatroomList";
 import Chatroom from "./Chatroom";
-import { useTheme, useMediaQuery, Grid } from "@mui/material";
+import { useTheme, useMediaQuery, Grid, Typography } from "@mui/material";
 import AppBottomNavBar from "../UI/AppBottomNavBar";
-import { useChatStore } from "../store/chat-context";
+import { useChatStore } from "../store/chat";
 
 const Chats = () => {
   const chatroomId = useChatStore((state) => state.chatroomId);
@@ -14,13 +14,19 @@ const Chats = () => {
   if (isBigScreen) {
     return (
       <>
-        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
-          <Grid item md={4} sx={{ display: "flex" }}>
+        <Grid container spacing={2} sx={{ flexGrow: 1, height: 0 }}>
+          <Grid item md={4} sx={{ display: "flex", height: "100%" }}>
             <ChatroomsList />
           </Grid>
 
           <Grid item md={8} sx={{ display: "flex", flex: "1" }}>
-            {chatroomId && <Chatroom key={chatroomId} />}
+            {chatroomId ? (
+              <Chatroom key={chatroomId} />
+            ) : (
+              <Typography variant="h4" sx={{ margin: "auto" }}>
+                Please select a chat
+              </Typography>
+            )}
           </Grid>
         </Grid>
       </>

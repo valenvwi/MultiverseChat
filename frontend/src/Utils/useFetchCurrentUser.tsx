@@ -1,23 +1,19 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { BASEURL } from "../config";
 import { UserProfileProps } from "../types/userProfile";
-import { useAuthStore } from "../App/store/auth-context";
+import { useAuthStore } from "../App/store/auth";
+import useAxiosWithJwtInterceptor from "../helpers/jwtinterceptor";
 
 export function useFetchCurrentUser(): UserProfileProps | null {
   const currentUserId = useAuthStore((state) => state.currentUserId);
-  // need to fix the default value not null
   const [currentUser, setCurrentUser] = useState<UserProfileProps | null>(null);
-  console.log(currentUserId);
+  const jwtAxios = useAxiosWithJwtInterceptor();
 
   useEffect(() => {
-    // if (!currentUserId) {
-    //   return;
-    // }
     const fetchCurrentUser = async () => {
       try {
         const userId = currentUserId;
-        const response = await axios.get(`${BASEURL}/users/${userId}/`, {
+        const response = await jwtAxios.get(`${BASEURL}/users/${userId}/`, {
           withCredentials: true,
         });
         const userDetails = response.data;

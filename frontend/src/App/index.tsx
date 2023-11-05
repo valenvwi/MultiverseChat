@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import Login from "./Login";
 import Users from "./Users";
@@ -9,59 +9,54 @@ import FinishProfileSetup from "./FinishProfileSetup";
 import EditProfile from "./Users/EditProfile";
 // import AppBottomNavigation from "./UI/AppBottomNavigation";
 import AppTopNavBar from "./UI/AppTopNavBar";
-import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { CssBaseline } from "@mui/material";
-import { useFetchCurrentUser } from "../Utils/useFetchCurrentUser";
 import "../App.css";
+import { useTheme } from "@mui/material";
+import { useFetchCurrentUser } from "../Utils/useFetchCurrentUser"
+import { useAuthStore } from "./store/auth";
 
 import Chats from "./Chats/index";
+import AppTopMobileHeader from "./UI/AppTopMobileHeader";
 
 function App() {
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const currentUser = useFetchCurrentUser();
-
+  // console.log("Current user: ", currentUser);
 
   return (
-    <BrowserRouter>
-        <CssBaseline />
-        {isBigScreen && <AppTopNavBar />}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <Users />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/chats"
-            element={
-              <ProtectedRoute>
-                <Chats />
-              </ProtectedRoute>
-            }
-          />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/setupProfile" element={<SetupProfile />} />
-          <Route path="/finishSetup" element={<FinishProfileSetup />} />
-          <Route
-            path="/editProfile"
-            element={
-              currentUser ? (
-                <EditProfile currentUser={currentUser} />
-              ) : (
-                <h5>Loading...</h5>
-              )
-            }
-          />
-        </Routes>
+  <>
+    {isBigScreen ? <AppTopNavBar /> : !isLoggedIn && <AppTopMobileHeader />}
 
-    </BrowserRouter>
-  );
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/setupProfile" element={<SetupProfile />} />
+      <Route
+        path="/"
+        element={
+          <ProtectedRoute>
+            <Users />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/chats"
+        element={
+          <ProtectedRoute>
+            <Chats />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route path="/finishSetup" element={<FinishProfileSetup />} />
+      { currentUser &&
+      <Route path="/editProfile" element={<EditProfile currentUser={currentUser}/>} />
+      }
+    </Routes>
+  </>
+  )
 }
 
 export default App;

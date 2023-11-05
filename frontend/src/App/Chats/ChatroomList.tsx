@@ -1,7 +1,5 @@
 import {
   ListItem,
-  ListItemButton,
-  ListItemText,
   Typography,
 } from "@mui/material";
 import { useEffect } from "react";
@@ -9,10 +7,8 @@ import { BASEURL } from "../../config";
 import { useState } from "react";
 import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
-import { useChatStore } from "../store/chat-context";
 import styled from "@mui/material/styles/styled";
 import { List } from "@mui/material";
-import { Chat } from "@mui/icons-material";
 import ChatroomListItem from "./ChatroomListItem";
 
 type ChatroomsListType = {
@@ -28,10 +24,11 @@ const StyledList = styled(List)(({ theme }) => ({
   flexShrink: 0,
   flexGrow: 1,
   overflowY: "auto",
+  overflowX: "hidden",
+  width: "100%",
 }));
 
 const ChatroomsList = () => {
-  const setChatroomId = useChatStore((state) => state.setChatroomId);
 
   const [chatList, setChatList] = useState<ChatroomsListType>([]);
   const jwtAxios = useAxiosWithJwtInterceptor();

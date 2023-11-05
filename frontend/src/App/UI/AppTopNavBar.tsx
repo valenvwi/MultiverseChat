@@ -14,8 +14,8 @@ import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../services/AuthServices";
 import { useState } from "react";
-import { useAuthStore } from "../store/auth-context";
-import { useChatStore } from "../store/chat-context";
+import { useAuthStore } from "../store/auth";
+import { useChatStore } from "../store/chat";
 
 const pages = [
   { name: "Find a partner", path: "/" },
@@ -59,7 +59,7 @@ function AppTopNavBar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" sx={{ backgroundColor: "#cc6600" }}>
       <Container>
         <Toolbar disableGutters>
           <Typography

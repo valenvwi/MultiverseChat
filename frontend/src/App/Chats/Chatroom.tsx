@@ -5,7 +5,8 @@ import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
 import useWebSocket from "react-use-websocket";
 import Message from "./Message";
 import ChatHeader from "./ChatHeader";
-import { useChatStore } from "../store/chat-context";
+import { useChatStore } from "../store/chat";
+import SendIcon from "@mui/icons-material/Send";
 
 type MessagesProps = {
   id: number;
@@ -32,7 +33,7 @@ const MessagesContainer = styled("div")({
 
 const InputContainer = styled("div")({
   display: "flex",
-  gap: "16px",
+  // gap: "16px",
 });
 
 const Chatroom = () => {
@@ -103,7 +104,9 @@ const Chatroom = () => {
           }}
         />
 
-        <Button onClick={sendMessage} disabled={!inputMessage} />
+        <Button onClick={sendMessage} disabled={!inputMessage}>
+          {<SendIcon />}
+        </Button>
       </InputContainer>
     </Container>
   );

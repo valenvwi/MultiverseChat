@@ -1,5 +1,5 @@
 import { Box, Button } from "@mui/material";
-import { useChatStore } from "../store/chat-context";
+import { useChatStore } from "../store/chat";
 
 const ChatHeader = () => {
   const setChatroomId = useChatStore((state) => state.setChatroomId);

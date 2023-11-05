@@ -3,7 +3,7 @@ import ChatIcon from "@mui/icons-material/Chat";
 import HomeIcon from "@mui/icons-material/Home";
 import PersonIcon from "@mui/icons-material/Person";
 import { Link } from "react-router-dom";
-import { useChatStore } from "../store/chat-context";
+import { useChatStore } from "../store/chat";
 
 const AppBottomNavBar = () => {
   const setChatroomId = useChatStore((state) => state.setChatroomId);

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { BASEURL } from "../config";
-import { useAuthStore } from "../App/store/auth-context";
+import { useAuthStore } from "../App/store/auth";
 
 type AuthProps = {
   login: (username: string, password: string) => any;

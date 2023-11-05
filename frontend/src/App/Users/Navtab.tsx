@@ -14,7 +14,7 @@ const Navtab = ({ onChangeTab }: NavtabProps) => {
   };
 
   return (
-    <Box sx={{ width: "100%", bgcolor: "background.paper", mb: "32px" }}>
+    <Box sx={{ width: "100%", mb: "32px" }}>
       <Tabs value={value} onChange={handleChange} centered>
         <Tab label="Exchange Hub" />
         <Tab label="Goal Match" />
