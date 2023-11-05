@@ -3,15 +3,15 @@ import { useChatStore } from "../store/chat-context";
 
 const ChatHeader = () => {
   const setChatroomId = useChatStore((state) => state.setChatroomId);
-  
+
   const backToChatrooms = () => {
-    setChatroomId(0);
-  }
+    setChatroomId(null);
+  };
   return (
     <Box>
       <Button onClick={backToChatrooms}>Back</Button>
     </Box>
-  )
+  );
 };
 
 export default ChatHeader;

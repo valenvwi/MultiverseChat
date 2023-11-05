@@ -15,6 +15,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../services/AuthServices";
 import { useState } from "react";
 import { useAuthStore } from "../store/auth-context";
+import { useChatStore } from "../store/chat-context";
 
 const pages = [
   { name: "Find a partner", path: "/" },
@@ -32,6 +33,12 @@ function AppTopNavBar() {
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
+
+  const setChatroomId = useChatStore((state) => state.setChatroomId);
+
+  const backToChatrooms = () => {
+    setChatroomId(null);
+  };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -78,6 +85,7 @@ function AppTopNavBar() {
                 {pages.map((page) => (
                   <Button
                     key={page.name}
+                    onClick={backToChatrooms}
                     sx={{ my: 2, mx: 1, color: "white", display: "block" }}
                     component={Link}
                     to={page.path}

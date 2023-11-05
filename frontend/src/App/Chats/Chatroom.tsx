@@ -24,12 +24,12 @@ const Container = styled("div")({
 });
 
 const MessagesContainer = styled("div")({
-  // flexGrow: 1,
-  // height: 0,
-  // overflowY: "auto",
-  // display: "flex",
-  // flexDirection: "column",
-  // gap: "8px",
+  flexGrow: 1,
+  height: 0,
+  overflowY: "auto",
+  display: "flex",
+  flexDirection: "column",
+  gap: "8px",
 });
 
 const InputContainer = styled("div")({
@@ -90,7 +90,7 @@ const Chatroom = () => {
 
       <InputContainer>
         <TextField
-          sx={{ flexGrow: 1, backgroundColor: "white" }}
+          sx={{ flexGrow: 1, backgroundColor: "white", my: 2 }}
           placeholder="Type a message"
           value={inputMessage}
           onChange={(e) => setInputMessage(e.target.value)}

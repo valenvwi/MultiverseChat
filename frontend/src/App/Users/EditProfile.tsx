@@ -151,7 +151,8 @@ const EditProfile = ({ currentUser }: EditProfileProps) => {
     },
   });
   return (
-    <Container component="main" maxWidth="md">
+    <Grid sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+    <Container component="main" maxWidth="md" sx={{ flexGrow: 1, overflowY: "auto" }}>
       <Box
         sx={{
           display: "flex",
@@ -322,8 +323,9 @@ const EditProfile = ({ currentUser }: EditProfileProps) => {
           </Button>
         </Box>
       </Box>
-      {!isBigScreen && <AppBottomNavBar />}
     </Container>
+      {!isBigScreen && <AppBottomNavBar />}
+      </Grid>
   );
 };
 

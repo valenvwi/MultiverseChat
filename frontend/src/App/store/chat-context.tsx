@@ -1,11 +1,11 @@
 import { create } from "zustand";
 
 type ChatState = {
-  chatroomId: number;
-  setChatroomId: (chatroomId: number) => void;
+  chatroomId: number | null;
+  setChatroomId: (chatroomId: number | null) => void;
 };
 
 export const useChatStore = create<ChatState>((set) => ({
-  chatroomId: 0,
-  setChatroomId: (chatroomId: number) => set({ chatroomId }),
+  chatroomId: null,
+  setChatroomId: (chatroomId) => set({ chatroomId }),
 }));

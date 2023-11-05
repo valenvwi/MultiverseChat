@@ -22,7 +22,7 @@ const FinishProfileSetup = () => {
         }}
       >
         <Typography component="h1" variant="h5">
-          Great {firstName}! You have finished setting up your profile!
+          Great {firstName}! We have your profile saved.
         </Typography>
 
         <Button type="submit" variant="contained" sx={{ mt: 4, mb: 3 }}>

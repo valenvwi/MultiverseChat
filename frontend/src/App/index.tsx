@@ -13,6 +13,7 @@ import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { CssBaseline } from "@mui/material";
 import { useFetchCurrentUser } from "../Utils/useFetchCurrentUser";
+import "../App.css";
 
 import Chats from "./Chats/index";
 

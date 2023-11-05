@@ -1,6 +1,6 @@
 import ChatroomsList from "./ChatroomList";
 import Chatroom from "./Chatroom";
-import { useTheme, useMediaQuery, Grid, Box } from "@mui/material";
+import { useTheme, useMediaQuery, Grid } from "@mui/material";
 import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useChatStore } from "../store/chat-context";
 
@@ -11,53 +11,38 @@ const Chats = () => {
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
   console.log("ChatroomId: ", chatroomId);
 
+
+  if (isBigScreen) {
+    return (
+      <>
+        <Grid container spacing={2} sx={{ flexGrow: 1 }}>
+          <Grid item md={4}>
+            <ChatroomsList />
+          </Grid>
+
+          <Grid item md={8} sx={{ display: "flex", flex: "1" }}>
+            {chatroomId && <Chatroom key={chatroomId} />}
+          </Grid>
+        </Grid>
+      </>
+    );
+  }
+
   return (
     <>
-      <Grid container spacing={2}>
-        {chatroomId !== 0 ? (
-          <Box
-            component={Grid}
-            item
-            xs={12}
-            md={4}
-            display={{ xs: "none", md: "block" }}
-          >
-            <ChatroomsList />
-          </Box>
-        ) : (
-          <Box
-            component={Grid}
-            item
-            xs={12}
-            md={4}
-            display={{ xs: "block", md: "block" }}
-          >
-            <ChatroomsList />
-          </Box>
-        )}
+      <Grid
+        container
+        sx={{ flexGrow: 1, flexDirection: "column " }}
+      >
+        <Grid
+          item
+          xs={12}
+          sx={{ display: "flex", flexDirection: "column", flex: "1" }}
+        >
+          {chatroomId === null ? <ChatroomsList /> : <Chatroom />}
+        </Grid>
 
-        {chatroomId !== 0 ? (
-          <Box
-            component={Grid}
-            item
-            xs={12}
-            md={8}
-            display={{ xs: "block", md: "block" }}
-          >
-            {chatroomId && <Chatroom />}
-          </Box>
-        ) : (
-          <Box
-            component={Grid}
-            item
-            xs={12}
-            md={8}
-            display={{ xs: "none", md: "block" }}
-          >
-            {chatroomId && <Chatroom />}
-          </Box>
-        )}
-        {!isBigScreen && <AppBottomNavBar />}
+        <AppBottomNavBar />
       </Grid>
     </>
   );
