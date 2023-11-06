@@ -169,7 +169,7 @@ const EditProfile = ({ currentUser }: EditProfileProps) => {
             noValidate
             onSubmit={formik.handleSubmit}
             encType="multipart/form-data"
-            sx={{ mt: 5 }}
+            sx={{ mt: 8 }}
           >
             <Grid container spacing={2}>
               <Box

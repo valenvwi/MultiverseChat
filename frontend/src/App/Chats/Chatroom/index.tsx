@@ -1,12 +1,14 @@
 import { Button, TextField, styled } from "@mui/material";
 import { useState } from "react";
-import { BASEURL, WS_ROOT } from "../../config";
-import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
+import { BASEURL, WS_ROOT } from "../../../config";
+import useAxiosWithJwtInterceptor from "../../../helpers/jwtinterceptor";
 import useWebSocket from "react-use-websocket";
 import Message from "./Message";
 import ChatHeader from "./ChatHeader";
-import { useChatStore } from "../store/chat";
+import { useChatStore } from "../../store/chat";
+import { useAuthStore } from "../../store/auth";
 import SendIcon from "@mui/icons-material/Send";
+import { ChatroomsListType } from "../../../types/chatroom";
 
 type MessagesProps = {
   id: number;
@@ -18,7 +20,6 @@ const Container = styled("div")({
   flexGrow: 1,
   display: "flex",
   flexDirection: "column",
-  padding: "16px",
   gap: "16px",
 });
 
@@ -36,8 +37,10 @@ const InputContainer = styled("div")({
   // gap: "16px",
 });
 
-const Chatroom = () => {
-  const chatroomId = useChatStore((state) => state.chatroomId);
+const Chatroom = ({chatroom}: {chatroom: ChatroomsListType}) => {
+  const chatroomId = chatroom.id;
+  const currentUserId = useAuthStore((state) => state.currentUserId);
+  console.log("CurrentUserId: ", currentUserId)
 
   const [messages, setMessages] = useState<MessagesProps[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -58,7 +61,9 @@ const Chatroom = () => {
 
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     onOpen: () => {
-      fetchMessages(chatroomId);
+      if (chatroomId){
+        fetchMessages(chatroomId);
+      }
     },
     onMessage: (event) => {
       const newMessage = JSON.parse(event.data);
@@ -77,13 +82,14 @@ const Chatroom = () => {
 
   return (
     <Container>
-      <ChatHeader />
+      <ChatHeader userId={currentUserId === chatroom.owner.id ? chatroom.participant.id : chatroom.owner.id}/>
       <MessagesContainer>
         {messages.map((message: MessagesProps) => (
           <Message
             key={message.id}
             content={message.content}
             sender={message.sender}
+            currentUserId={currentUserId}
           />
         ))}
       </MessagesContainer>

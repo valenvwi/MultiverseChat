@@ -5,13 +5,12 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import { useChatStore } from "../store/chat";
+import { useChatStore } from "../../store/chat";
 import { useEffect } from "react";
-import { BASEURL } from "../../config";
-import axios from "axios";
+import { BASEURL } from "../../../config";
 import { useState } from "react";
-import { UserProfileProps } from "../../types/userProfile";
-import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
+import useAxiosWithJwtInterceptor from "../../../helpers/jwtinterceptor";
+import useFetchUser from "../../../Utils/useFetchUser";
 
 type Props = {
   chatroom: {
@@ -29,10 +28,10 @@ type Props = {
 };
 
 const ChatroomListItem = ({ chatroom, userId }: Props) => {
-  const setChatroomId = useChatStore((state) => state.setChatroomId);
-  const [user, setUser] = useState<UserProfileProps>();
+  const setChatroom = useChatStore((state) => state.setChatroom);
   const [lastMessage, setLastMessage] = useState<string>("");
   const jwtAxios = useAxiosWithJwtInterceptor();
+  const user = useFetchUser(userId);
 
   useEffect(() => {
     const fetchMessages = async (chatroomId: number) => {
@@ -49,35 +48,9 @@ const ChatroomListItem = ({ chatroom, userId }: Props) => {
     fetchMessages(chatroom.id);
   }, []);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get(`${BASEURL}/users/${userId}/`, {
-          withCredentials: true,
-        });
-        const userDetails = response.data;
-        const userProfile: UserProfileProps = {
-          firstName: userDetails.first_name,
-          lastName: userDetails.last_name,
-          location: userDetails.location,
-          avatar: userDetails.avatar,
-          nativeLanguage: userDetails.native_language,
-          targetLanguage: userDetails.target_language,
-          bio: userDetails.bio,
-          id: userDetails.id,
-        };
-        setUser(userProfile);
-      } catch (err) {
-        setUser(null);
-      }
-    };
-
-    fetchUser();
-  }, []);
-
   return (
     <>
-      <ListItemButton onClick={() => setChatroomId(chatroom.id)}>
+      <ListItemButton onClick={() => setChatroom(chatroom)}>
         <Avatar
           src={user?.avatar}
           sx={{ width: "88px", height: "88px", mx: 1, my: 1 }}

@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 import { useChatStore } from "../store/chat";
 
 const AppBottomNavBar = () => {
-  const setChatroomId = useChatStore((state) => state.setChatroomId);
+  const setChatroom = useChatStore((state) => state.setChatroom);
 
   const backToChatrooms = () => {
-    setChatroomId(null);
+    setChatroom(null);
   };
   return (
     <Paper

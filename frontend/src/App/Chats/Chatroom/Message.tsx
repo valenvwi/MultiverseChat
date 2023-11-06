@@ -1,9 +1,9 @@
 import { Paper, styled } from "@mui/material";
-import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
 
 type MessageData = {
   content: string;
   sender: number;
+  currentUserId: number;
 };
 
 const CurrentUserMessageContainer = styled(Paper)({
@@ -24,16 +24,11 @@ const OtherUserMessageContainer = styled(Paper)({
   backgroundColor: "#e5faff",
 });
 
-
-const Message = ({ content, sender }: MessageData) => {
-  const currentUser = useFetchCurrentUser();
-
-  if (sender === currentUser?.id) {
+const Message = ({ content, sender, currentUserId }: MessageData) => {
+  if (sender === currentUserId) {
     return <CurrentUserMessageContainer>{content}</CurrentUserMessageContainer>;
   }
-  return (
-    <OtherUserMessageContainer>{content}</OtherUserMessageContainer>
-  );
+  return <OtherUserMessageContainer>{content}</OtherUserMessageContainer>;
 };
 
 export default Message;

@@ -12,7 +12,6 @@ import {
 } from "@mui/material";
 
 const Login = () => {
-
   const { login } = useAuth();
   const navigate = useNavigate();
   const formik = useFormik({
@@ -45,16 +44,20 @@ const Login = () => {
     },
   });
   return (
-    <Container component="main" maxWidth="md">
+    <Container
+      component="main"
+      maxWidth="xs"
+      sx={{ display: "flex", flexGrow: 1 }}
+    >
       <Box
         sx={{
-          marginTop: 4,
+          margin: "auto",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography component="h1" variant="h4" fontWeight={700}>
           Log in
         </Typography>
         <Box

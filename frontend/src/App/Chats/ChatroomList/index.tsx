@@ -1,21 +1,13 @@
-import {
-  ListItem,
-  Typography,
-} from "@mui/material";
+import { ListItem, Typography } from "@mui/material";
 import { useEffect } from "react";
-import { BASEURL } from "../../config";
+import { BASEURL } from "../../../config";
 import { useState } from "react";
-import useAxiosWithJwtInterceptor from "../../helpers/jwtinterceptor";
-import { useFetchCurrentUser } from "../../Utils/useFetchCurrentUser";
+import useAxiosWithJwtInterceptor from "../../../helpers/jwtinterceptor";
+import { useFetchCurrentUser } from "../../../Utils/useFetchCurrentUser";
 import styled from "@mui/material/styles/styled";
 import { List } from "@mui/material";
 import ChatroomListItem from "./ChatroomListItem";
-
-type ChatroomsListType = {
-  id: number;
-  owner: number;
-  participant: number;
-};
+import { ChatroomsListType } from "../../../types/chatroom";
 
 const StyledList = styled(List)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -29,8 +21,7 @@ const StyledList = styled(List)(({ theme }) => ({
 }));
 
 const ChatroomsList = () => {
-
-  const [chatList, setChatList] = useState<ChatroomsListType>([]);
+  const [chatList, setChatList] = useState<ChatroomsListType[]>([]);
   const jwtAxios = useAxiosWithJwtInterceptor();
   const currentUser = useFetchCurrentUser();
 

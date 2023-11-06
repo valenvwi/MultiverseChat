@@ -21,7 +21,7 @@ type Props = {
 const UserProfile: React.FC<Props> = ({ user }) => {
   const jwtAxios = useAxiosWithJwtInterceptor();
   const navigate = useNavigate();
-  const setChatroomId = useChatStore((state) => state.setChatroomId);
+  const setChatroom = useChatStore((state) => state.setChatroom);
 
   const createChat = async () => {
     try {
@@ -29,9 +29,9 @@ const UserProfile: React.FC<Props> = ({ user }) => {
         participant: user.id,
         withCredentials: true,
       });
-      const chatroomId = response.data.id;
+      const chatroom = response.data;
       navigate("/chats");
-      setChatroomId(chatroomId);
+      setChatroom(chatroom);
     } catch (err) {
       console.log(err);
     }

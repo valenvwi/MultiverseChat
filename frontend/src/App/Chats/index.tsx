@@ -5,25 +5,30 @@ import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useChatStore } from "../store/chat";
 
 const Chats = () => {
-  const chatroomId = useChatStore((state) => state.chatroomId);
+  const chatroom = useChatStore((state) => state.chatroom);
 
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
-  console.log("ChatroomId: ", chatroomId);
+  console.log("Chatroom: ", chatroom);
 
   if (isBigScreen) {
     return (
       <>
-        <Grid container spacing={2} sx={{ flexGrow: 1, height: 0 }}>
+        <Grid container sx={{ flexGrow: 1, height: 0 }}>
           <Grid item md={4} sx={{ display: "flex", height: "100%" }}>
             <ChatroomsList />
           </Grid>
 
           <Grid item md={8} sx={{ display: "flex", flex: "1" }}>
-            {chatroomId ? (
-              <Chatroom key={chatroomId} />
+            {chatroom ? (
+              <Chatroom key={chatroom.id} chatroom={chatroom }/>
             ) : (
-              <Typography variant="h4" sx={{ margin: "auto" }}>
+              <Typography
+                component="h1"
+                variant="h5"
+                fontWeight={700}
+                sx={{ textAlign: "center", margin: "auto" }}
+              >
                 Please select a chat
               </Typography>
             )}
@@ -37,7 +42,7 @@ const Chats = () => {
     <>
       <Grid container sx={{ flexGrow: 1, flexDirection: "column " }}>
         <Grid item sx={{ display: "flex", flexDirection: "column", flex: "1" }}>
-          {chatroomId === null ? <ChatroomsList /> : <Chatroom />}
+          {chatroom === null ? <ChatroomsList /> : <Chatroom key={chatroom.id}  chatroom={chatroom}/>}
         </Grid>
 
         <AppBottomNavBar />

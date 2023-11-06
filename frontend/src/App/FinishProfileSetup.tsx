@@ -1,27 +1,27 @@
-import {
-  Box,
-  Button,
-  Container,
-  Link,
-  Typography,
-} from "@mui/material";
+import { Box, Button, Container, Link, Typography } from "@mui/material";
 
 const FinishProfileSetup = () => {
   const firstName = localStorage.getItem("first_name");
   return (
-    <Container>
+    <Container
+      component="main"
+      maxWidth="md"
+      sx={{ display: "flex", flexGrow: 1 }}
+    >
       <Box
         sx={{
-          marginTop: 8,
+          margin: "auto",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "center",
-          height: "80vh",
-          textAlign: "center",
         }}
       >
-        <Typography component="h1" variant="h5">
+        <Typography
+          component="h1"
+          variant="h5"
+          fontWeight={700}
+          sx={{ textAlign: "center" }}
+        >
           Great {firstName}! We have your profile saved.
         </Typography>
 

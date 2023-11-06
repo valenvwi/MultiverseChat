@@ -140,16 +140,16 @@ const SetupProfile = () => {
     },
   });
   return (
-    <Container component="main" maxWidth="md">
+    <Container component="main" maxWidth="md" sx={{display: {md:"flex"}, flexGrow: {md:1}}}>
       <Box
         sx={{
-          marginTop: 6,
+          margin: {xs: "36px auto", md:"auto"},
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h6">
+        <Typography component="h1" variant="h5" fontWeight={700} sx={{ textAlign: "center"}}>
           One more step and you are ready to go!
         </Typography>
         <Box
@@ -244,6 +244,7 @@ const SetupProfile = () => {
                     !!formik.touched.nativeLanguage &&
                     !!formik.errors.nativeLanguage
                   }
+                  MenuProps={{ sx: { maxHeight: "50vh" } }}
                 >
                   {languageOptions.map((option) => (
                     <MenuItem key={option} value={option}>
@@ -271,6 +272,7 @@ const SetupProfile = () => {
                     !!formik.touched.targetLanguage &&
                     !!formik.errors.targetLanguage
                   }
+                  MenuProps={{ sx: { maxHeight: "50vh" } }}
                 >
                   {languageOptions.map((option) => (
                     <MenuItem key={option} value={option}>

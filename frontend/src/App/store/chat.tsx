@@ -1,11 +1,13 @@
 import { create } from "zustand";
+import { ChatroomsListType } from "../../types/chatroom";
+
 
 type ChatState = {
-  chatroomId: number | null;
-  setChatroomId: (chatroomId: number | null) => void;
+  chatroom: ChatroomsListType | null;
+  setChatroom: (chatroom: ChatroomsListType | null) => void;
 };
 
 export const useChatStore = create<ChatState>((set) => ({
-  chatroomId: null,
-  setChatroomId: (chatroomId) => set({ chatroomId }),
+  chatroom: null,
+  setChatroom: (chatroom) => set({ chatroom }),
 }));

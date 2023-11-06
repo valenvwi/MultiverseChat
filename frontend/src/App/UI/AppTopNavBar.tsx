@@ -34,10 +34,10 @@ function AppTopNavBar() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
   const setCurrentUserId = useAuthStore((state) => state.setCurrentUserId);
 
-  const setChatroomId = useChatStore((state) => state.setChatroomId);
+  const setChatroom = useChatStore((state) => state.setChatroom);
 
   const backToChatrooms = () => {
-    setChatroomId(null);
+    setChatroom(null);
   };
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
