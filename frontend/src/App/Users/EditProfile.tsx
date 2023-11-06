@@ -21,6 +21,7 @@ import { BASEURL } from "../../config";
 import languageOptions from "../../constants";
 import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useTheme } from "@mui/material/styles";
+import AppTopMobileNavBar from "../UI/AppTopMobileNavBar";
 
 axios.defaults.withCredentials = true;
 
@@ -152,6 +153,7 @@ const EditProfile = ({ currentUser }: EditProfileProps) => {
   });
   return (
     <Grid sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
+      <AppTopMobileNavBar title="Edit Profile" />
       <Container
         component="main"
         maxWidth="md"

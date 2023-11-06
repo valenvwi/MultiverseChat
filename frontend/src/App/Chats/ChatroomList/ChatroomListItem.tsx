@@ -50,12 +50,12 @@ const ChatroomListItem = ({ chatroom, userId }: Props) => {
 
   return (
     <>
-      <ListItemButton onClick={() => setChatroom(chatroom)}>
+      <ListItemButton onClick={() => setChatroom(chatroom)} sx={{width: "100vw"}}>
         <Avatar
           src={user?.avatar}
-          sx={{ width: "88px", height: "88px", mx: 1, my: 1 }}
+          sx={{ width: "56px", height: "56px", mx: 1, my: 1 }}
         />
-        <Box>
+        <Box sx={{overflow: "hidden"}}>
           <ListItemText>{user?.firstName}</ListItemText>
           <Typography
             variant="subtitle2"
@@ -70,7 +70,6 @@ const ChatroomListItem = ({ chatroom, userId }: Props) => {
           </Typography>
         </Box>
       </ListItemButton>
-      ;
     </>
   );
 };

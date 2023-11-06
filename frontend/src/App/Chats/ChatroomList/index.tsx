@@ -1,4 +1,4 @@
-import { ListItem, Typography } from "@mui/material";
+import { ListItem, Typography, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import { BASEURL } from "../../../config";
 import { useState } from "react";
@@ -24,6 +24,8 @@ const ChatroomsList = () => {
   const [chatList, setChatList] = useState<ChatroomsListType[]>([]);
   const jwtAxios = useAxiosWithJwtInterceptor();
   const currentUser = useFetchCurrentUser();
+  const theme = useTheme();
+  const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
 
   const fetchChatroomList = async () => {
     try {
@@ -45,10 +47,12 @@ const ChatroomsList = () => {
   return (
     <>
       <StyledList>
-        <ListItem sx={{ mt: 1 }}>
+        <ListItem>
+          { isBigScreen &&
           <Typography sx={{ fontWeight: 700, margin: "10px auto" }}>
             All Chats
           </Typography>
+          }
         </ListItem>
         {chatList.map((chat) => (
           <ListItem key={chat.id} disablePadding>

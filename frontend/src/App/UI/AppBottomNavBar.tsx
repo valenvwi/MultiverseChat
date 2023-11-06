@@ -12,26 +12,20 @@ const AppBottomNavBar = () => {
     setChatroom(null);
   };
   return (
-    <Paper
-      // sx={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 6 }}
-      elevation={3}
-    >
-      <BottomNavigation showLabels>
+    <Paper elevation={3}>
+      <BottomNavigation>
         <BottomNavigationAction
-          label="Messages"
           onClick={backToChatrooms}
           icon={<ChatIcon />}
           component={Link}
           to="/chats"
         />
         <BottomNavigationAction
-          label="Home"
           icon={<HomeIcon />}
           component={Link}
           to="/"
         />
         <BottomNavigationAction
-          label="Profile"
           icon={<PersonIcon />}
           component={Link}
           to="/editProfile"

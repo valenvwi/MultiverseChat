@@ -28,7 +28,7 @@ export function useAuth(): AuthProps {
       const user_id = response.data.user_id;
       setCurrentUserId(user_id);
       setIsLoggedIn(true);
-      console.log("user_id", user_id);
+      // console.log("user_id", user_id);
     } catch (err: any) {
       return err.response.status;
     }

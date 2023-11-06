@@ -1,17 +1,18 @@
 import { useEffect } from "react";
 import { BASEURL } from "../config";
 import { UserProfileProps } from "../types/userProfile";
-import axios from "axios";
 import { useState } from "react";
+import useAxiosWithJwtInterceptor from "../helpers/jwtinterceptor";
 
 
 const useFetchUser = (userId: number) => {
+  const jwtAxios = useAxiosWithJwtInterceptor();
   const [user, setUser] = useState<UserProfileProps>();
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(`${BASEURL}/users/${userId}/`, {
+        const response = await jwtAxios.get(`${BASEURL}/users/${userId}/`, {
           withCredentials: true,
         });
         const userDetails = response.data;

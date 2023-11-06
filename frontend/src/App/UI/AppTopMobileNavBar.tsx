@@ -3,9 +3,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 
-function AppTopMobileHeader() {
-
-
+const AppTopMobileNavBar = ({title}: {title: string} ) => {
   return (
     <AppBar position="static">
       <Container>
@@ -13,23 +11,20 @@ function AppTopMobileHeader() {
           <Typography
             variant="h6"
             noWrap
-            component="a"
-            href="#app-bar-with-responsive-menu"
             sx={{
-              mr: 2,
-              display: "flex",
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
-              textDecoration: "none",
+              margin: "0 auto",
             }}
           >
-            MultiverseChat
+            {title}
           </Typography>
         </Toolbar>
       </Container>
     </AppBar>
   );
 }
-export default AppTopMobileHeader;
+
+export default AppTopMobileNavBar

@@ -8,7 +8,6 @@ const ChatHeader = ({ userId }: { userId: number }) => {
   const setChatroom = useChatStore((state) => state.setChatroom);
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
-  console.log("userId: " , userId)
   const user = useFetchUser(userId);
 
   const backToChatrooms = () => {
@@ -17,12 +16,12 @@ const ChatHeader = ({ userId }: { userId: number }) => {
   if (!isBigScreen) {
     return (
       <Box>
-        <Button onClick={backToChatrooms}>Back</Button>
+        {/* <Button onClick={backToChatrooms}>Back</Button> */}
       </Box>
     );
   }
   return (
-    <Box display="flex" alignItems="center" justifyContent="center" sx={{ backgroundColor: "#FFBB5C", padding: "10px" }} >
+    <Box display="flex" alignItems="center" justifyContent="center" sx={{ backgroundColor: "#8D9EFF", padding: "10px" }} >
       <Avatar
           src={user?.avatar}
         />

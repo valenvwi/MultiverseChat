@@ -59,7 +59,7 @@ function AppTopNavBar() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: "#cc6600" }}>
+    <AppBar position="static">
       <Container>
         <Toolbar disableGutters>
           <Typography
