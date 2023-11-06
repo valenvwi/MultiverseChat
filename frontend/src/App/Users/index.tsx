@@ -77,7 +77,7 @@ const Users = () => {
   return (
     <>
       <Grid sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <AppTopMobileNavBar title="Community" />
+        {!isBigScreen && <AppTopMobileNavBar title="Community" />}
         <Container
           component="main"
           maxWidth="xl"

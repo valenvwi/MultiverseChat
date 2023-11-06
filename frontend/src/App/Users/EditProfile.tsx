@@ -153,7 +153,7 @@ const EditProfile = ({ currentUser }: EditProfileProps) => {
   });
   return (
     <Grid sx={{ display: "flex", flexDirection: "column", height: "100vh" }}>
-      <AppTopMobileNavBar title="Edit Profile" />
+      {!isBigScreen && <AppTopMobileNavBar title="Edit Profile" />}
       <Container
         component="main"
         maxWidth="md"
