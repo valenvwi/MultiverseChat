@@ -119,9 +119,9 @@ const UserProfile: React.FC<Props> = ({ user }) => {
             </Box>
             <CardActions>
               <Button
-                size="small"
+                variant="contained"
                 sx={{
-                  margin: "0 auto",
+                  margin: "10px auto",
                 }}
                 onClick={createChat}
               >
