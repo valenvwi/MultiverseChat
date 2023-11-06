@@ -50,7 +50,7 @@ const ChatroomListItem = ({ chatroom, userId }: Props) => {
 
   return (
     <>
-      <ListItemButton onClick={() => setChatroom(chatroom)} sx={{width: "100vw"}}>
+      <ListItemButton onClick={() => setChatroom(chatroom)} sx={{width: "95vw"}}>
         <Avatar
           src={user?.avatar}
           sx={{ width: "56px", height: "56px", mx: 1, my: 1 }}

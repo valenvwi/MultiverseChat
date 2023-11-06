@@ -67,6 +67,7 @@ const Chats = () => {
               color: "white",
               left: "10px",
               top: "10px",
+              zIndex: 1,
             }}
           >
             <ArrowBackIosNewIcon />

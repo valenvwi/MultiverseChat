@@ -12,7 +12,7 @@ const AppBottomNavBar = () => {
     setChatroom(null);
   };
   return (
-    <Paper elevation={3}>
+    <Paper elevation={3} sx={{zIndex:1}}>
       <BottomNavigation>
         <BottomNavigationAction
           onClick={backToChatrooms}
