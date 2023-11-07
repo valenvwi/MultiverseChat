@@ -316,14 +316,6 @@ const EditProfile = ({ currentUser }: EditProfileProps) => {
                   autoComplete="bio"
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-              <FormGroup>
-                <FormControlLabel
-                  control={<Switch aria-label="login switch" />}
-                  label={currentUser?.active ? "Public" : "Private"}
-                />
-              </FormGroup>
-            </Grid> */}
             </Grid>
             <Button
               type="submit"

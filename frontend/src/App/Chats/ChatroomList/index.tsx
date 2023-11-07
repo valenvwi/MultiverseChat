@@ -1,7 +1,6 @@
 import {
   Button,
   ListItem,
-  Link,
   Typography,
   useMediaQuery,
   useTheme,
@@ -16,6 +15,7 @@ import styled from "@mui/material/styles/styled";
 import { List } from "@mui/material";
 import ChatroomListItem from "./ChatroomListItem";
 import { ChatroomsListType } from "../../../types/chatroom";
+import { useNavigate } from "react-router-dom";
 
 const StyledList = styled(List)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -34,6 +34,11 @@ const ChatroomsList = () => {
   const currentUser = useFetchCurrentUser();
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
+  const navigate = useNavigate();
+
+  const directToHome = () => {
+    navigate("/");
+  };
 
   const fetchChatroomList = async () => {
     try {
@@ -51,7 +56,6 @@ const ChatroomsList = () => {
   useEffect(() => {
     fetchChatroomList();
   }, []);
-  
 
   return (
     <>
@@ -65,21 +69,31 @@ const ChatroomsList = () => {
         </ListItem>
         {!isBigScreen && chatList.length === 0 && (
           <>
-          <Box sx={{ display: "flex", flexDirection:"column", justifyContent: "center", alignItems:"center", height:"90%"}}>
-            <Typography
-              component="h1"
-              variant="h5"
-              fontWeight={700}
-              sx={{ textAlign: "center" }}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+                alignItems: "center",
+                height: "90%",
+              }}
             >
-              You don't have any chats yet. Start a conversation!
-            </Typography>
-            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 0 }}>
-              <Link href="/" color="inherit" underline="none">
+              <Typography
+                component="h1"
+                variant="h5"
+                fontWeight={700}
+                sx={{ textAlign: "center" }}
+              >
+                You don't have any chats yet. Start a conversation!
+              </Typography>
+              <Button
+                onClick={directToHome}
+                variant="contained"
+                sx={{ mt: 3, mb: 0 }}
+              >
                 Explore now!
-              </Link>
-            </Button>
-          </Box>
+              </Button>
+            </Box>
           </>
         )}
         {chatList.map((chat) => (

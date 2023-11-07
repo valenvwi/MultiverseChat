@@ -6,6 +6,7 @@ import useAxiosWithJwtInterceptor from "../helpers/jwtinterceptor";
 
 export function useFetchCurrentUser(): UserProfileProps | null {
   const currentUserId = useAuthStore((state) => state.currentUserId);
+  console.log("CurrentUserId in useFetchCurrentUser: ", currentUserId)
   const [currentUser, setCurrentUser] = useState<UserProfileProps | null>(null);
   const jwtAxios = useAxiosWithJwtInterceptor();
 
@@ -15,8 +16,7 @@ export function useFetchCurrentUser(): UserProfileProps | null {
         return;
       }
       try {
-        const userId = currentUserId;
-        const response = await jwtAxios.get(`${BASEURL}/users/${userId}/`, {
+        const response = await jwtAxios.get(`${BASEURL}/users/${currentUserId}/`, {
           withCredentials: true,
         });
         const userDetails = response.data;

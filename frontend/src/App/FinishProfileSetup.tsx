@@ -1,6 +1,13 @@
-import { Box, Button, Container, Link, Typography } from "@mui/material";
+import { Box, Button, Container, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const FinishProfileSetup = () => {
+  const navigate = useNavigate();
+
+  const directToHome = () => {
+    navigate("/");
+  }
+
   const firstName = localStorage.getItem("first_name");
   return (
     <Container
@@ -25,10 +32,8 @@ const FinishProfileSetup = () => {
           Great {firstName}! We have your profile saved.
         </Typography>
 
-        <Button type="submit" variant="contained" sx={{ mt: 4, mb: 3 }}>
-          <Link href="/" color="inherit" underline="none">
+        <Button onClick={directToHome} variant="contained" sx={{ mt: 4, mb: 3 }}>
             Explore now!
-          </Link>
         </Button>
       </Box>
     </Container>
