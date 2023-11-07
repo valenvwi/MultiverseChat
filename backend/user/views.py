@@ -6,6 +6,9 @@ from rest_framework.exceptions import ValidationError
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated
+from django.db.models import OuterRef, Subquery
+from django.db.models import BooleanField, Q
+
 
 from .serializers import (
     UserProfileSerializer,
@@ -15,6 +18,7 @@ from .serializers import (
 )
 from .models import UserProfile, User
 from .schema import user_list_docs
+from chat.models import Chatroom
 
 
 class RegisterView(APIView):
@@ -56,14 +60,19 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     @user_list_docs
     def list(self, request):
         nativeLanguage = request.query_params.get("native_language")
-        print("nativeLanguage", nativeLanguage)
         targetLanguage = request.query_params.get("target_language")
 
         if nativeLanguage:
-            # Add the filter later for user that already have chatroom with the current user
             try:
+                chatroom_exists = Chatroom.objects.filter(
+                    Q(owner=OuterRef("user"), participant=request.user) |
+                    Q(participant=OuterRef("user"), owner=request.user)
+                )
                 self.queryset = self.queryset.filter(native_language=nativeLanguage.capitalize(), active=True)
-                self.queryset = self.queryset.exclude(user=request.user)
+                self.queryset = self.queryset.annotate(has_chatroom=Subquery(chatroom_exists.values("id")[:1], output_field=BooleanField()))
+                exclude_condition = Q(has_chatroom=False) | Q(has_chatroom=None)
+                self.queryset = self.queryset.filter(exclude_condition)
+
                 if not self.queryset.exists():
                     raise ValidationError(detail=f"Users with nativeLanguage {nativeLanguage} not found")
             except ValueError:
@@ -71,7 +80,8 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
         if targetLanguage:
             try:
-                self.queryset = self.queryset.filter(target_language=targetLanguage.capitalize())
+                self.queryset = self.queryset.filter(target_language=targetLanguage.capitalize(), active=True)
+
                 if not self.queryset.exists():
                     raise ValidationError(detail=f"Users with target language {targetLanguage} not found")
             except ValueError:
@@ -82,14 +92,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 
     def create(self, request, format=None):
-        user = request.user  # Get the authenticated user
+        user = request.user
         print("user", user)
 
         data = {
         'user': user.id,
         'first_name': request.data.get('first_name'),
         'last_name': request.data.get('last_name'),
-        'avatar': request.data.get('avatar'),  # Make sure this is a valid file
+        'avatar': request.data.get('avatar'),
         'location': request.data.get('location'),
         'bio': request.data.get('bio'),
         'native_language': request.data.get('native_language'),

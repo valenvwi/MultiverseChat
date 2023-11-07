@@ -8,7 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Chatroom, Message
 from .schemas import list_message_docs
 from .serializers import MessageSerializer, ChatroomSerializer
-from django.db.models import Q
+from django.db.models import Q, Max
 from user.models import User
 
 class ChatroomViewSet(viewsets.ViewSet):
@@ -16,7 +16,10 @@ class ChatroomViewSet(viewsets.ViewSet):
 
     def list(self, request):
         user = request.user
-        chatrooms = Chatroom.objects.filter(Q(owner=user) | Q(participant=user))
+        chatrooms = Chatroom.objects.filter(Q(owner=user) | Q(participant=user)).annotate(
+            last_message_timestamp=Max('message__timestamp')
+        )
+        chatrooms = chatrooms.order_by('-last_message_timestamp')
         serializer = ChatroomSerializer(chatrooms, many=True)
         print("Response: ", serializer.data)
         return Response(serializer.data)
@@ -40,11 +43,6 @@ class ChatroomViewSet(viewsets.ViewSet):
             serializer = ChatroomSerializer(chatroom)
             return Response(serializer.data)
 
-    # def destroy(self, request, pk=None):
-    #     user = request.user
-    #     chatroom = Chatroom.objects.get(id=pk, owner=user)
-    #     chatroom.delete()
-    #     return Response({"detail": "Chatroom deleted."}, status=204)
 
 class MessageViewSet(viewsets.ViewSet):
     @list_message_docs

@@ -30,6 +30,7 @@ const Message = ({
   currentUserId,
   timestamp,
 }: MessageData) => {
+  
   const date = new Date(timestamp);
   let hours: number | string = date.getHours();
   let minutes: number | string = date.getMinutes();

@@ -3,6 +3,7 @@ import {
   Box,
   ListItemButton,
   ListItemText,
+  Paper,
   Typography,
 } from "@mui/material";
 import { useChatStore } from "../../store/chat";
@@ -50,12 +51,16 @@ const ChatroomListItem = ({ chatroom, userId }: Props) => {
 
   return (
     <>
-      <ListItemButton onClick={() => setChatroom(chatroom)} sx={{width: "95vw"}}>
+      <ListItemButton
+        component={Paper}
+        onClick={() => setChatroom(chatroom)}
+        sx={{ width: "95vw" }}
+      >
         <Avatar
           src={user?.avatar}
           sx={{ width: "56px", height: "56px", mx: 1, my: 1 }}
         />
-        <Box sx={{overflow: "hidden"}}>
+        <Box sx={{ overflow: "hidden" }}>
           <ListItemText>{user?.firstName}</ListItemText>
           <Typography
             variant="subtitle2"
