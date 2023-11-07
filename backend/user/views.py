@@ -44,7 +44,6 @@ class RegisterView(APIView):
 class LogOutAPIView(APIView):
     def post(self, request, format=None):
         response = Response("Logged out successfully")
-        print("Log out response", response)
 
         response.set_cookie("refresh_token", "", expires=0)
         response.set_cookie("access_token", "", expires=0)
@@ -68,7 +67,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
                     Q(owner=OuterRef("user"), participant=request.user) |
                     Q(participant=OuterRef("user"), owner=request.user)
                 )
-                self.queryset = self.queryset.filter(native_language=nativeLanguage.capitalize(), active=True)
+                self.queryset = self.queryset.filter(native_language=nativeLanguage.capitalize())
                 self.queryset = self.queryset.annotate(has_chatroom=Subquery(chatroom_exists.values("id")[:1], output_field=BooleanField()))
                 exclude_condition = Q(has_chatroom=False) | Q(has_chatroom=None)
                 self.queryset = self.queryset.filter(exclude_condition)
@@ -80,7 +79,14 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
         if targetLanguage:
             try:
-                self.queryset = self.queryset.filter(target_language=targetLanguage.capitalize(), active=True)
+                chatroom_exists = Chatroom.objects.filter(
+                    Q(owner=OuterRef("user"), participant=request.user) |
+                    Q(participant=OuterRef("user"), owner=request.user)
+                )
+                self.queryset = self.queryset.filter(target_language=targetLanguage.capitalize())
+                self.queryset = self.queryset.annotate(has_chatroom=Subquery(chatroom_exists.values("id")[:1], output_field=BooleanField()))
+                exclude_condition = Q(has_chatroom=False) | Q(has_chatroom=None)
+                self.queryset = self.queryset.filter(exclude_condition)
 
                 if not self.queryset.exists():
                     raise ValidationError(detail=f"Users with target language {targetLanguage} not found")
@@ -93,7 +99,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
     def create(self, request, format=None):
         user = request.user
-        print("user", user)
 
         data = {
         'user': user.id,
@@ -118,7 +123,6 @@ class UserProfileViewSet(viewsets.ModelViewSet):
 
 class JWTSetCookieMixin:
     def finalize_response(self, request, response, *args, **kwargs):
-        print("Data in JWTSetCookieMixin: ",response.data)
         if response.data.get("refresh"):
             response.set_cookie(
                 settings.SIMPLE_JWT["REFRESH_TOKEN_NAME"],
@@ -135,8 +139,6 @@ class JWTSetCookieMixin:
                 httponly=True,
                 samesite=settings.SIMPLE_JWT["JWT_COOKIE_SAMESITE"],
             )
-
-        print("Final response: ", response)
 
         return super().finalize_response(request, response, *args, **kwargs)
 

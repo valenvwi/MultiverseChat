@@ -21,15 +21,12 @@ class ChatroomViewSet(viewsets.ViewSet):
         )
         chatrooms = chatrooms.order_by('-last_message_timestamp')
         serializer = ChatroomSerializer(chatrooms, many=True)
-        print("Response: ", serializer.data)
         return Response(serializer.data)
 
     def create(self, request):
         user = request.user
         participant_id = request.data.get("participant")
         participant = User.objects.get(id=participant_id)
-        print("participant: ", participant)
-        print("user: ", user)
 
         if participant == user:
             return Response({"detail": "You cannot create a chatroom with yourself."}, status=400)
@@ -56,17 +53,3 @@ class MessageViewSet(viewsets.ViewSet):
             return Response(serializer.data)
         except Chatroom.DoesNotExist:
             return Response([])
-
-
-    # def create(self, request):
-    #     chatroom_id = request.data.get("chatroom_id")
-    #     chatroom = Chatroom.objects.get(id=chatroom_id)
-    #     content = request.data.get("content")
-    #     sender = request.user
-
-    #     try:
-    #         message = Message.objects.create(chatroom=chatroom, content=content, sender=sender)
-    #         serializer = MessageSerializer(message)
-    #         return Response(serializer.data)
-    #     except Chatroom.DoesNotExist:
-    #         return Response({"detail": "Chatroom does not exist."}, status=400)

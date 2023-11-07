@@ -29,6 +29,7 @@ function AppTopNavBar() {
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  console.log("anchorElUser: ", anchorElUser);
 
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -49,6 +50,7 @@ function AppTopNavBar() {
   };
 
   const handleMenuItemClick = (setting: string) => {
+    setAnchorElUser(null);
     if (setting === "Edit Profile") {
       navigate("/editProfile");
     } else if (setting === "Logout") {

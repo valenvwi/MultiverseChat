@@ -21,7 +21,6 @@ class ChatConsumer(JsonWebsocketConsumer):
             self.close(code=4001)
 
         self.chatroom_id = self.scope["url_route"]["kwargs"]["chatroomId"]
-        print("Chatroom id: ", self.chatroom_id)
 
         try:
             self.chatroom = Chatroom.objects.get(id=self.chatroom_id)
@@ -32,9 +31,6 @@ class ChatConsumer(JsonWebsocketConsumer):
 
     def receive_json(self, content):
         sender = self.user
-
-        print("Content: ", content)
-        print("Sender: ", sender)
         message_content = content["content"]
 
         message = Message.objects.create(chatroom=self.chatroom, sender=sender, content=message_content)
