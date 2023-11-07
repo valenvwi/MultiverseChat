@@ -1,4 +1,12 @@
-import { ListItem, Typography, useMediaQuery, useTheme } from "@mui/material";
+import {
+  Button,
+  ListItem,
+  Link,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Box,
+} from "@mui/material";
 import { useEffect } from "react";
 import { BASEURL } from "../../../config";
 import { useState } from "react";
@@ -43,17 +51,37 @@ const ChatroomsList = () => {
   useEffect(() => {
     fetchChatroomList();
   }, []);
+  
 
   return (
     <>
       <StyledList>
         <ListItem>
-          { isBigScreen &&
-          <Typography sx={{ fontWeight: 700, margin: "10px auto" }}>
-            All Chats
-          </Typography>
-          }
+          {isBigScreen && (
+            <Typography sx={{ fontWeight: 700, margin: "10px auto" }}>
+              All Chats
+            </Typography>
+          )}
         </ListItem>
+        {!isBigScreen && chatList.length === 0 && (
+          <>
+          <Box sx={{ display: "flex", flexDirection:"column", justifyContent: "center", alignItems:"center", height:"90%"}}>
+            <Typography
+              component="h1"
+              variant="h5"
+              fontWeight={700}
+              sx={{ textAlign: "center" }}
+            >
+              You don't have any chats yet. Start a conversation!
+            </Typography>
+            <Button type="submit" variant="contained" sx={{ mt: 3, mb: 0 }}>
+              <Link href="/" color="inherit" underline="none">
+                Explore now!
+              </Link>
+            </Button>
+          </Box>
+          </>
+        )}
         {chatList.map((chat) => (
           <ListItem key={chat.id} disablePadding>
             <ChatroomListItem

@@ -11,6 +11,9 @@ export function useFetchCurrentUser(): UserProfileProps | null {
 
   useEffect(() => {
     const fetchCurrentUser = async () => {
+      if (!currentUserId) {
+        return;
+      }
       try {
         const userId = currentUserId;
         const response = await jwtAxios.get(`${BASEURL}/users/${userId}/`, {
@@ -29,12 +32,12 @@ export function useFetchCurrentUser(): UserProfileProps | null {
         };
         setCurrentUser(userProfile);
       } catch (err) {
-        setCurrentUser(null);
+        console.error("Error fetching current user:", err);
       }
     };
 
     fetchCurrentUser();
-  }, [currentUserId]);
+  }, [currentUserId, jwtAxios]);
 
   return currentUser;
 }

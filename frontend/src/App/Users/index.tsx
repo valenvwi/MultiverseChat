@@ -86,22 +86,22 @@ const Users = () => {
           <br />
           <Navtab onChangeTab={handleTabChange} />
 
-          {users.length === 0 && !isLoading && (
+          {users.length === 0 && !isLoading ? (
             <Typography
-              variant="h4"
-              sx={{ margin: "0px auto", textAlign: "center" }}
+            component="h1" variant="h4" fontWeight={700}
+              sx={{ margin: "100px auto", textAlign: "center" }}
             >
               No users found
             </Typography>
+          ) : (
+            <Grid container spacing={2}>
+              {users.map((user) => (
+                <Grid item xs={12} md={6} key={user.id}>
+                  <UserProfile user={user} />
+                </Grid>
+              ))}
+            </Grid>
           )}
-
-          <Grid container spacing={2}>
-            {users.map((user) => (
-              <Grid item xs={12} md={6} key={user.id}>
-                <UserProfile user={user} />
-              </Grid>
-            ))}
-          </Grid>
         </Container>
         {!isBigScreen && <AppBottomNavBar />}
       </Grid>

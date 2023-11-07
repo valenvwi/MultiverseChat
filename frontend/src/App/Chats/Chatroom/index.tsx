@@ -34,7 +34,7 @@ const InputContainer = styled("div")({
 const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
   const chatroomId = chatroom.id;
   const currentUserId = useAuthStore((state) => state.currentUserId);
-  // console.log("CurrentUserId: ", currentUserId)
+  console.log("CurrentUserId in chatroom: ", currentUserId)
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputMessage, setInputMessage] = useState("");
@@ -48,7 +48,6 @@ const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
         `${BASEURL}/messages/?chatroom_id=${chatroomId}`
       );
       setMessages(response.data);
-      // console.log("Using fetchMessages: ", { response });
     } catch (error) {
       console.error("Error fetching messages:", error);
     }
@@ -63,7 +62,6 @@ const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
     onMessage: (event) => {
       const newMessage = JSON.parse(event.data);
       setMessages((oldMessages) => [...oldMessages, newMessage.new_message]);
-      // console.log("Using onMessage: ", { newMessage });
     },
   });
 
@@ -72,7 +70,6 @@ const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
       chatroom_id: chatroomId,
       content: inputMessage,
     });
-    // console.log("Using sendMessage: ", { inputMessage });
     setInputMessage("");
   };
 
