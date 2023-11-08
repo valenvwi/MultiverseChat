@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import UserProfile from "./UserProfile";
 import { Container, Grid, Typography } from "@mui/material";
 import { UserProfileProps, UserProfileData } from "../../types/userProfile";
@@ -10,69 +10,50 @@ import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useTheme } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import AppTopMobileNavBar from "../UI/AppTopMobileNavBar";
+import { useQuery } from "@tanstack/react-query";
 
 const Users = () => {
-  const [users, setUsers] = useState<UserProfileProps[]>([]);
-  const [error, setError] = useState<Error | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
   const jwtAxios = useAxiosWithJwtInterceptor();
   const currentUser = useFetchCurrentUser();
   const [currentTab, setCurrentTab] = useState(0);
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
 
-  const fetchUsers = async (showGoalMatch: boolean) => {
-    setIsLoading(true);
-    let apiEndpoint = `${BASEURL}/users/`;
+  const apiEndpoint =
+    currentTab === 0
+      ? `${BASEURL}/users/?native_language=${currentUser?.targetLanguage}&target_language=${currentUser?.nativeLanguage}`
+      : `${BASEURL}/users/?target_language=${currentUser?.targetLanguage}`;
 
-    if (showGoalMatch) {
-      apiEndpoint += `?native_language=${currentUser?.targetLanguage}&target_language=${currentUser?.nativeLanguage}`;
-    } else {
-      apiEndpoint += `?target_language=${currentUser?.targetLanguage}`;
-    }
+  const queryKey = [apiEndpoint];
+  const queryFn = async () => {
+    const response = await jwtAxios.get(apiEndpoint);
+    const data = response.data;
+    console.log(data);
 
-    try {
-      const response = await jwtAxios.get(apiEndpoint);
-      const data = response.data;
-      console.log(data);
-
-      const userProfiles: UserProfileProps[] = data.map(
-        (user: UserProfileData) => ({
-          firstName: user.first_name,
-          lastName: user.last_name,
-          avatar: user.avatar,
-          location: user.location,
-          nativeLanguage: user.native_language,
-          targetLanguage: user.target_language,
-          bio: user.bio,
-          id: user.id,
-        })
-      );
-
-      setUsers(userProfiles.filter((user) => user.id !== currentUser?.id));
-
-      setError(null);
-      setIsLoading(false);
-      return data;
-    } catch (error: any) {
-      if (error.response && error.response.status === 400) {
-        setUsers([]);
-        setIsLoading(false);
-        throw error;
-      }
-    }
+    const userProfiles: UserProfileProps[] = data.map(
+      (user: UserProfileData) => ({
+        firstName: user.first_name,
+        lastName: user.last_name,
+        avatar: user.avatar,
+        location: user.location,
+        nativeLanguage: user.native_language,
+        targetLanguage: user.target_language,
+        bio: user.bio,
+        id: user.id,
+      })
+    );
+    return userProfiles;
   };
+
+  const { data: users } = useQuery({
+    queryKey,
+    queryFn,
+    initialData: [],
+  });
 
   const handleTabChange = (newTabValue: number) => {
     setCurrentTab(newTabValue);
   };
-
-  useEffect(() => {
-    if (currentUser) {
-      fetchUsers(currentTab === 0);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentTab, currentUser]);
 
   return (
     <>
@@ -86,9 +67,11 @@ const Users = () => {
           <br />
           <Navtab onChangeTab={handleTabChange} />
 
-          {users.length === 0 && !isLoading ? (
+          {users.length === 0 ? (
             <Typography
-            component="h1" variant="h4" fontWeight={700}
+              component="h1"
+              variant="h4"
+              fontWeight={700}
               sx={{ margin: "100px auto", textAlign: "center" }}
             >
               No users found

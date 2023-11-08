@@ -7,11 +7,10 @@ import {
   Typography,
 } from "@mui/material";
 import { useChatStore } from "../../store/chat";
-import { useEffect } from "react";
 import { BASEURL } from "../../../config";
-import { useState } from "react";
 import useAxiosWithJwtInterceptor from "../../../helpers/jwtinterceptor";
-import useFetchUser from "../../../Utils/useFetchUser";
+import { useFetchUser } from "../../../Utils/useFetchUser";
+import { useQuery } from "@tanstack/react-query";
 
 type Props = {
   chatroom: {
@@ -30,24 +29,23 @@ type Props = {
 
 const ChatroomListItem = ({ chatroom, userId }: Props) => {
   const setChatroom = useChatStore((state) => state.setChatroom);
-  const [lastMessage, setLastMessage] = useState<string>("");
   const jwtAxios = useAxiosWithJwtInterceptor();
   const user = useFetchUser(userId);
 
-  useEffect(() => {
-    const fetchMessages = async (chatroomId: number) => {
-      try {
-        const response = await jwtAxios.get(
-          `${BASEURL}/messages/?chatroom_id=${chatroomId}`
-        );
-        setLastMessage(response.data[response.data.length - 1].content);
-      } catch (error) {
-        console.error("Error fetching messages:", error);
-      }
-    };
+  const queryKey = [`messages/${chatroom.id}`];
 
-    fetchMessages(chatroom.id);
-  }, []);
+  const queryFn = async () => {
+    const response = await jwtAxios.get(
+      `${BASEURL}/messages/?chatroom_id=${chatroom.id}`
+    );
+    const lastMessage = response.data[response.data.length - 1].content;
+    return lastMessage;
+  };
+  const { data: lastMessage } = useQuery({
+    queryKey,
+    queryFn,
+    initialData: "",
+  });
 
   return (
     <>

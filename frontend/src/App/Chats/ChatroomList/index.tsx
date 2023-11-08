@@ -6,16 +6,15 @@ import {
   useTheme,
   Box,
 } from "@mui/material";
-import { useEffect } from "react";
 import { BASEURL } from "../../../config";
-import { useState } from "react";
 import useAxiosWithJwtInterceptor from "../../../helpers/jwtinterceptor";
 import { useFetchCurrentUser } from "../../../Utils/useFetchCurrentUser";
 import styled from "@mui/material/styles/styled";
 import { List } from "@mui/material";
 import ChatroomListItem from "./ChatroomListItem";
-import { ChatroomsListType } from "../../../types/chatroom";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { ChatroomsListType } from "../../../types/chatroom";
 
 const StyledList = styled(List)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -29,7 +28,6 @@ const StyledList = styled(List)(({ theme }) => ({
 }));
 
 const ChatroomsList = () => {
-  const [chatList, setChatList] = useState<ChatroomsListType[]>([]);
   const jwtAxios = useAxiosWithJwtInterceptor();
   const currentUser = useFetchCurrentUser();
   const theme = useTheme();
@@ -40,22 +38,21 @@ const ChatroomsList = () => {
     navigate("/");
   };
 
-  const fetchChatroomList = async () => {
-    try {
-      const response = await jwtAxios.get(`${BASEURL}/chatrooms/`, {
-        withCredentials: true,
-      });
-      const chatrooms = response.data;
-      setChatList(chatrooms);
-      console.log(chatrooms);
-    } catch (err) {
-      console.log(err);
-    }
-  };
+  const queryKey = ["chatrooms"];
+  const queryFn = async() => {
+    const response = await jwtAxios.get(`${BASEURL}/chatrooms/`, {
+      withCredentials: true,
+    });
+    const chatrooms: ChatroomsListType[] = response.data;
+    return chatrooms;
+  }
 
-  useEffect(() => {
-    fetchChatroomList();
-  }, []);
+  const { data: chatList } = useQuery({
+    queryKey,
+    queryFn,
+    initialData: [],
+  });
+
 
   return (
     <>

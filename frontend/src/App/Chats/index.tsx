@@ -5,8 +5,6 @@ import {
   useMediaQuery,
   Grid,
   Typography,
-  Box,
-  Button,
 } from "@mui/material";
 import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useChatStore } from "../store/chat";
@@ -24,7 +22,6 @@ const Chats = () => {
 
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
-  console.log("Chatroom: ", chatroom);
 
   if (isBigScreen) {
     return (

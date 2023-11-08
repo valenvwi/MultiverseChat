@@ -6,12 +6,10 @@ import Signup from "./Signup";
 import SetupProfile from "./SetupProfile";
 import ProtectedRoute from "../services/ProtectedRoute";
 import FinishProfileSetup from "./FinishProfileSetup";
-// import AppBottomNavigation from "./UI/AppBottomNavigation";
 import AppTopNavBar from "./UI/AppTopNavBar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import "../App.css";
 import { useTheme } from "@mui/material";
-// import { useFetchCurrentUser } from "../Utils/useFetchCurrentUser"
 import { useAuthStore } from "./store/auth";
 
 import Chats from "./Chats/index";
@@ -22,8 +20,6 @@ function App() {
   const theme = useTheme();
   const isBigScreen = useMediaQuery(theme.breakpoints.up("md"));
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
-  // const currentUser = useFetchCurrentUser();
-  // console.log("Current user: ", currentUser);
 
   return (
   <>

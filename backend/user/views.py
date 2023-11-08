@@ -84,6 +84,7 @@ class UserProfileViewSet(viewsets.ModelViewSet):
                     Q(participant=OuterRef("user"), owner=request.user)
                 )
                 self.queryset = self.queryset.filter(target_language=targetLanguage.capitalize())
+                self.queryset = self.queryset.exclude(user=request.user)
                 self.queryset = self.queryset.annotate(has_chatroom=Subquery(chatroom_exists.values("id")[:1], output_field=BooleanField()))
                 exclude_condition = Q(has_chatroom=False) | Q(has_chatroom=None)
                 self.queryset = self.queryset.filter(exclude_condition)

@@ -1,7 +1,7 @@
 import { Avatar, Box, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 import { useMediaQuery } from "@mui/material";
-import useFetchUser from "../../../Utils/useFetchUser";
+import { useFetchUser } from "../../../Utils/useFetchUser";
 
 const ChatHeader = ({ userId }: { userId: number }) => {
   const theme = useTheme();

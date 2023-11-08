@@ -1,4 +1,4 @@
-import { Box, Button, TextField, Typography, styled } from "@mui/material";
+import { Button, TextField, Typography, styled } from "@mui/material";
 import { useState, useEffect, useRef } from "react";
 import { BASEURL, WS_ROOT } from "../../../config";
 import useAxiosWithJwtInterceptor from "../../../helpers/jwtinterceptor";
@@ -34,7 +34,6 @@ const InputContainer = styled("div")({
 const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
   const chatroomId = chatroom.id;
   const currentUserId = useAuthStore((state) => state.currentUserId);
-  console.log("CurrentUserId in chatroom: ", currentUserId)
 
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [inputMessage, setInputMessage] = useState("");
