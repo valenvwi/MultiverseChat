@@ -1,7 +1,7 @@
 # MultiverseChat
 
 MultiverseChat is a web application I've created to assist individuals in discovering language exchange partners and study buddies. 
-It represents the initial version of the application, featuring a Python Django backend, a React TypeScript frontend, and predominantly styled using Material-UI (MUI).
+It represents the initial version of the application, featuring a Python Django backend, a React TypeScript frontend, and SQLite3 as database.
 
 ## Key Features
 - User Registration
@@ -12,6 +12,14 @@ It represents the initial version of the application, featuring a Python Django 
 - Notification System
 - Friend Requests
 - And more cool features!
+  
+## Tech-Stack
+**Back-end:** 
+Python, Django, Channels, Django Cors Header, Django REST Framework, Simple JWT, Pillow, Uvicorn
+
+**Front-end:**
+React, TypeScript, Axios, Formik, Material UI, React-query, React-router-dom, React useWebsocket, Zustand
+
 
 ## Demo
   
