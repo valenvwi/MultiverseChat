@@ -22,35 +22,35 @@ function App() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
 
   return (
-  <>
-    {isBigScreen ? <AppTopNavBar /> : !isLoggedIn && <AppTopMobileHeader />}
+    <>
+      {isBigScreen ? <AppTopNavBar /> : !isLoggedIn && <AppTopMobileHeader />}
 
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
-      <Route path="/setupProfile" element={<SetupProfile />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <Users />
-          </ProtectedRoute>
-        }
-      />
-      <Route
-        path="/chats"
-        element={
-          <ProtectedRoute>
-            <Chats />
-          </ProtectedRoute>
-        }
-      />
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+        <Route path="/setupProfile" element={<SetupProfile />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <Users />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chats"
+          element={
+            <ProtectedRoute>
+              <Chats />
+            </ProtectedRoute>
+          }
+        />
 
-      <Route path="/finishSetup" element={<FinishProfileSetup />} />
-      <Route path="/editProfile" element={<EditProfileWrapper/>} />
-    </Routes>
-  </>
-  )
+        <Route path="/finishSetup" element={<FinishProfileSetup />} />
+        <Route path="/editProfile" element={<EditProfileWrapper />} />
+      </Routes>
+    </>
+  );
 }
 
 export default App;

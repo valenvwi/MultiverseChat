@@ -1,11 +1,6 @@
 import ChatroomsList from "./ChatroomList";
 import Chatroom from "./Chatroom";
-import {
-  useTheme,
-  useMediaQuery,
-  Grid,
-  Typography,
-} from "@mui/material";
+import { useTheme, useMediaQuery, Grid, Typography } from "@mui/material";
 import AppBottomNavBar from "../UI/AppBottomNavBar";
 import { useChatStore } from "../store/chat";
 import AppTopMobileNavBar from "../UI/AppTopMobileNavBar";

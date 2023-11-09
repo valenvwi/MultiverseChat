@@ -9,6 +9,7 @@ import { useAuthStore } from "../../store/auth";
 import SendIcon from "@mui/icons-material/Send";
 import { ChatroomsListType } from "../../../types/chatroom";
 import { MessageType } from "../../../types/message";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Container = styled("div")({
   flexGrow: 1,
@@ -52,6 +53,8 @@ const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
     }
   };
 
+  const queryClient = useQueryClient();
+
   const { sendJsonMessage } = useWebSocket(socketUrl, {
     onOpen: () => {
       if (chatroomId) {
@@ -61,6 +64,10 @@ const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
     onMessage: (event) => {
       const newMessage = JSON.parse(event.data);
       setMessages((oldMessages) => [...oldMessages, newMessage.new_message]);
+      queryClient.setQueryData(
+        [`messages/${chatroomId}`],
+        newMessage.new_message.content
+      );
     },
   });
 
