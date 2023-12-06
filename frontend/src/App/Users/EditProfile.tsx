@@ -61,9 +61,6 @@ const EditProfile = ({ currentUser }: EditProfileProps) => {
     formData.append("target_language", userProfile.targetLanguage);
     formData.append("bio", userProfile.bio);
     formData.append("user", currentUser?.id);
-    // formData.append("active", userProfile.active);
-
-    console.log("FormData: ", formData);
 
     try {
       const response = await axios.put<UserProfileProps>(

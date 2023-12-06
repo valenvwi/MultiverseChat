@@ -66,7 +66,7 @@ const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
       setMessages((oldMessages) => [...oldMessages, newMessage.new_message]);
       queryClient.setQueryData(
         [`messages/${chatroomId}`],
-        newMessage.new_message.content
+        newMessage.new_message
       );
     },
   });
@@ -114,6 +114,7 @@ const Chatroom = ({ chatroom }: { chatroom: ChatroomsListType }) => {
               <Typography
                 variant="subtitle2"
                 sx={{ textAlign: "center", mb: 3 }}
+                key={message.id}
               >
                 {getMessageDate(message.timestamp)}
               </Typography>

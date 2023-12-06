@@ -57,8 +57,6 @@ const SetupProfile = () => {
     formData.append("target_language", userProfile.targetLanguage);
     formData.append("bio", userProfile.bio);
 
-    console.log("FormData: ", formData);
-
     try {
       const response = await axios.post<UserProfileProps>(
         `${BASEURL}/users/`,

@@ -4,7 +4,6 @@ import EditProfile from "./EditProfile";
 
 export const EditProfileWrapper = () => {
   const currentUser = useFetchCurrentUser();
-  console.log(currentUser);
 
   if (!currentUser) { return <Typography>Loading...</Typography>;}
   return <EditProfile currentUser={currentUser} />;

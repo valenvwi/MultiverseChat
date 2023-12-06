@@ -28,7 +28,6 @@ const Users = () => {
   const queryFn = async () => {
     const response = await jwtAxios.get(apiEndpoint);
     const data = response.data;
-    console.log(data);
 
     const userProfiles: UserProfileProps[] = data.map(
       (user: UserProfileData) => ({

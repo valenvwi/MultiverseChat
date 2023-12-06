@@ -29,7 +29,6 @@ function AppTopNavBar() {
   const navigate = useNavigate();
 
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-  console.log("anchorElUser: ", anchorElUser);
 
   const setIsLoggedIn = useAuthStore((state) => state.setIsLoggedIn);
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);

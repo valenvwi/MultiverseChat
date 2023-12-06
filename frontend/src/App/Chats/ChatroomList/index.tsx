@@ -14,7 +14,7 @@ import { List } from "@mui/material";
 import ChatroomListItem from "./ChatroomListItem";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ChatroomsListType } from "../../../types/chatroom";
+import { ChatroomsListData, ChatroomsListType } from "../../../types/chatroom";
 
 const StyledList = styled(List)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
@@ -39,20 +39,29 @@ const ChatroomsList = () => {
   };
 
   const queryKey = ["chatrooms"];
-  const queryFn = async() => {
+  const queryFn = async () => {
     const response = await jwtAxios.get(`${BASEURL}/chatrooms/`, {
       withCredentials: true,
     });
-    const chatrooms: ChatroomsListType[] = response.data;
+    const chatroomsData: ChatroomsListData[] = response.data;
+    const chatrooms: ChatroomsListType[] = chatroomsData.map((chatroom) => {
+      const chatroomObj: ChatroomsListType = {
+        id: chatroom.id,
+        owner: chatroom.owner,
+        participant: chatroom.participant,
+        ownerLastReadMsg: chatroom.owner_last_read_message,
+        participantLastReadMsg: chatroom.participant_last_read_message,
+      };
+      return chatroomObj;
+    });
     return chatrooms;
-  }
+  };
 
   const { data: chatList } = useQuery({
     queryKey,
     queryFn,
     initialData: [],
   });
-
 
   return (
     <>

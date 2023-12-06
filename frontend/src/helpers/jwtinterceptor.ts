@@ -23,8 +23,6 @@ const useAxiosWithJwtInterceptor = () => {
           try {
             const response = await axios.post(`${BASEURL}/token/refresh/`);
             if (response["status"] == 200) {
-              console.log("originalRequest", originalRequest);
-
               return jwtAxios(originalRequest);
             }
           } catch (refreshError) {
