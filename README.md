@@ -8,11 +8,6 @@ It represents the initial version of the application, featuring a Python Django 
 - Find Language Exchange Partners
 - Real-time Chatroom
 
-## Upcoming Additions
-- Notification System
-- Friend Requests
-- And more cool features!
-  
 ## Tech-Stack
 **Back-end:** 
 Python, Django, Channels, Django Cors Header, Django REST Framework, Simple JWT, Pillow, Uvicorn
